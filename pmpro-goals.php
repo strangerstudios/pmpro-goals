@@ -3,13 +3,13 @@
  * Plugin Name: Paid Memberships Pro Goal Progress
  * Description: Track Membership and Revenue Goals with Progress Bars.
  * Plugin URI: https://paidmembershipspro.com
- * Author: StrangerStudios
+ * Author: Stranger Studios
  * Author URI: https://paidmembershipspro.com
  * Version: 1.0
  * License: GPL2 or later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain: pmpro-goals
- * Domain Path: /lannguages
+ * Domain Path: /languages
  * Network: false
  *
  * Paid Memberships Pro Goal Progress is free software: you can redistribute it and/or modify
@@ -27,6 +27,11 @@
  */
 
 defined( 'ABSPATH' ) or exit;
+
+function pmpro_goals_load_text_domain() {
+	load_plugin_textdomain( 'pmpro-goals', false, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
+}
+add_action( 'plugins_loaded', 'pmpro_goals_load_text_domain' );
 
 function pmpro_goals_register_scripts_styles() {
 
@@ -81,7 +86,7 @@ function pmpro_goal_progress_bar_shortcode( $atts ) {
 	$goal_reached = false;
 
 	$after_total_amount_text =  ' / ' . $pmpro_currency_symbol . $goal . ' ' . $text_after;
-	
+
 	/**
 	 * Filter to adjust the text after the total amount inside the goal progress bar.
 	 * @return string The text after the total amount.
@@ -90,7 +95,7 @@ function pmpro_goal_progress_bar_shortcode( $atts ) {
 	$text_after = apply_filters( 'pmpro_goals_text_after', $after_total_amount_text );
 
 	if ( empty( $levels ) ) {
-		return "<span class='pmpro-warning'>" . __( 'Please insert a level ID', 'pmpro-goals' ) . "</span>";
+		return "<span class='pmpro-warning'>" . __( 'Please insert a valid level(s)', 'pmpro-goals' ) . "</span>";
 	}
 
 	$sql = "SELECT total FROM $wpdb->pmpro_membership_orders WHERE membership_id IN(" . implode(",", $levels) . ") AND status = 'success'";
