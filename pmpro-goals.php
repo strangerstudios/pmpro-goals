@@ -54,12 +54,13 @@ function pmpro_goal_progress_bar_shortcode( $atts ) {
 		'level' => NULL,
 		'levels' => NULL,
 		'goal' => NULL,
-		'text_after' => 'raised',
+		'after' => NULL,
 		'fill_color' => '#f7f7f7',
 		'background_color' => '#ff008c',
-		'font_color' => '#FFF'
+		'font_color' => '#FFF',
+		'type' => NULL, 
+		'before' => NULL,
 	), $atts ) );
-
 	//if levels is used instead of level
 	if ( isset( $levels ) && ! isset( $level ) ) {
 		$level = $levels;
@@ -78,41 +79,67 @@ function pmpro_goal_progress_bar_shortcode( $atts ) {
 	}
 
 	$goal = intval( $goal );
-	$text_after = esc_attr( $text_after );
+	$after = esc_attr( $after );
 	$fill_color = esc_attr( $fill_color );
 	$background_color = esc_attr( $background_color );
 	$font_color = esc_attr( $font_color );
+	$type = esc_attr( $type );
 	$total = 0;
 	$goal_reached = false;
 
-	$after_total_amount_text =  ' / ' . $pmpro_currency_symbol . $goal . ' ' . $text_after;
+	
+	if ( empty( $levels ) ) {
+		return "<span class='pmpro-warning'>" . __( 'Please insert a valid level(s)', 'pmpro-goals' ) . "</span>";
+	}
+
+	if ( empty( $type ) || 'members' !== $type ) {
+		$type = 'revenue';
+	}
+
+	if ( 'revenue' === $type ) {
+
+		if ( empty( $before ) ) {
+			$before = $pmpro_currency_symbol;
+		}elseif ( 'false' === $before ) {
+			$before = '';
+		}
+
+		$sql = "SELECT total FROM $wpdb->pmpro_membership_orders WHERE membership_id IN(" . implode(",", $levels) . ") AND status = 'success'";
+
+		$results = $wpdb->get_results( $sql );
+
+		if ( ! empty( $results ) && is_array( $results ) ) {
+			foreach ( $results as $key => $value ) {
+				$total += floatval( $value->total);
+			}
+		}
+
+		if ( $total > 0 ) {
+			$total = round( $total );
+		} else {
+			$total = 0;
+		}	
+
+		$after_total_amount_text =  ' / ' . $before . $goal . ' ' . $after;
+
+	} else {
+
+		if ( 'false' === $before ) {
+			$before = '';
+		}
+
+		$sql = "SELECT COUNT(user_id) AS total FROM $wpdb->pmpro_memberships_users WHERE membership_id IN(" . implode(",", $levels) . ") AND status = 'active'"; 
+		$total = $wpdb->get_var( $sql );
+
+		$after_total_amount_text =  ' / ' . $goal . ' ' . $after;
+	}
 
 	/**
 	 * Filter to adjust the text after the total amount inside the goal progress bar.
 	 * @return string The text after the total amount.
 	 * @since 1.0
 	 */
-	$text_after = apply_filters( 'pmpro_goals_text_after', $after_total_amount_text );
-
-	if ( empty( $levels ) ) {
-		return "<span class='pmpro-warning'>" . __( 'Please insert a valid level(s)', 'pmpro-goals' ) . "</span>";
-	}
-
-	$sql = "SELECT total FROM $wpdb->pmpro_membership_orders WHERE membership_id IN(" . implode(",", $levels) . ") AND status = 'success'";
-
-	$results = $wpdb->get_results( $sql );
-
-	if ( ! empty( $results ) && is_array( $results ) ) {
-		foreach ( $results as $key => $value ) {
-			$total += floatval( $value->total);
-		}
-	}
-
-	if ( $total > 0 ) {
-		$total = round( $total );
-	} else {
-		$total = 0;
-	}	
+	$after = apply_filters( 'pmpro_goals_after', $after_total_amount_text );
 
 	ob_start();
 	?>
@@ -121,32 +148,28 @@ function pmpro_goal_progress_bar_shortcode( $atts ) {
 		    jQuery('#pmpro_goal_progress_bar').goalProgress({
 		        goalAmount: <?php echo $goal; ?>,
 		        currentAmount: <?php echo $total; ?>,
-		        textBefore: "<?php echo $pmpro_currency_symbol; ?>",
-		        textAfter: "<?php echo $text_after; ?> ",
+		        textBefore: "<?php echo $before; ?>",
+		        textAfter: "<?php echo $after; ?> ",
 		    });
 		});
 	</script>
 
 	<style type="text/css">
 		.goalProgress {
-			background: <?php echo $fill_color; ?>;
+			background: <?php echo $background_color; ?>;
 			padding: 5px;
 		}
 		div.progressBar {
-			background: <?php echo $background_color; ?>;
+			background: <?php echo $fill_color; ?>;
 			color: <?php echo $font_color; ?>;
-			font-size: 1.5em;
+			font-size: 2rem;
 			font-family: 'helvetica neue', helvetica, arial, sans-serif;
 			letter-spacing: -1px;
 			font-weight: 700;
 			padding: 10px;
 			display: block;
-			overflow: hidden;
-			width: 20px;
-		}
-		span.goalAmount {
-			display: none;
-			text-indent: -9999px;
+			/*overflow:hidden;*/
+			width: 5px;
 		}
 	</style>	
 	
