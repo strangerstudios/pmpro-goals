@@ -96,6 +96,21 @@ function pmpro_goal_progress_bar_shortcode( $atts ) {
 		$type = 'revenue';
 	}
 
+
+	// This is used to create a level string that can be hashed.
+	$levels_for_hash = '';
+	if ( is_array( $levels ) ) {
+		foreach( $levels as $key => $value ) {
+			$levels_for_hash .= $value;
+		}
+	} else {
+		$levels_for_hash = $levels;
+	}
+
+	// Check hash for transients.
+	$to_hash = md5( $goal . $after . $fill_color . $background_color . $font_color . $type . $levels_for_hash );
+	$hashkey = substr( $to_hash, 0, 10);
+
 	if ( 'revenue' === $type ) {
 
 		if ( empty( $before ) ) {
@@ -104,21 +119,29 @@ function pmpro_goal_progress_bar_shortcode( $atts ) {
 			$before = '';
 		}
 
-		$sql = "SELECT total FROM $wpdb->pmpro_membership_orders WHERE membership_id IN(" . implode(",", $levels) . ") AND status = 'success'";
+		if ( false === get_transient( "pmpro_goals_" . $hashkey )  ) {
 
-		$results = $wpdb->get_results( $sql );
+			$sql = "SELECT total FROM $wpdb->pmpro_membership_orders WHERE membership_id IN(" . implode(",", $levels) . ") AND status = 'success'";
 
-		if ( ! empty( $results ) && is_array( $results ) ) {
-			foreach ( $results as $key => $value ) {
-				$total += floatval( $value->total);
+			$results = $wpdb->get_results( $sql );
+
+			if ( ! empty( $results ) && is_array( $results ) ) {
+				foreach ( $results as $key => $value ) {
+					$total += floatval( $value->total);
+				}
 			}
-		}
 
-		if ( $total > 0 ) {
-			$total = round( $total );
+			if ( $total > 0 ) {
+				$total = round( $total );
+			} else {
+				$total = 0;
+			}
+
+			set_transient( 'pmpro_goals_' . $hashkey, $total, 1 * HOUR_IN_SECONDS );	
+
 		} else {
-			$total = 0;
-		}	
+			$total = get_transient( 'pmpro_goals_' . $hashkey );
+		}
 
 		$after_total_amount_text =  ' / ' . $before . $goal . ' ' . $after;
 
@@ -128,8 +151,12 @@ function pmpro_goal_progress_bar_shortcode( $atts ) {
 			$before = '';
 		}
 
+		if ( false === get_transient( "pmpro_goals_" . $hashkey )  ) {
 		$sql = "SELECT COUNT(user_id) AS total FROM $wpdb->pmpro_memberships_users WHERE membership_id IN(" . implode(",", $levels) . ") AND status = 'active'"; 
 		$total = $wpdb->get_var( $sql );
+		} else {
+			$total = get_transient( "pmpro_goals_" . $hashkey );
+		}
 
 		$after_total_amount_text =  ' / ' . $goal . ' ' . $after;
 	}
