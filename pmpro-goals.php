@@ -33,22 +33,19 @@ function pmpro_goals_load_text_domain() {
 }
 add_action( 'plugins_loaded', 'pmpro_goals_load_text_domain' );
 
-function pmpro_goals_register_scripts_styles() {
-
-	wp_register_style( 'pmpro-goals-progress-css', plugins_url( '/css/goalProgress.css', __FILE__ ), array( '' ), '1.0.0');
+function pmpro_goals_register_scripts() {
 
 	wp_register_script( 'pmpro-goals-progress-js', plugins_url( '/js/goalProgress.js', __FILE__ ), array( 'jquery' ), '1.0.0', true );
 
 }
-add_action( 'wp_enqueue_scripts', 'pmpro_goals_register_scripts_styles' );
+add_action( 'wp_enqueue_scripts', 'pmpro_goals_register_scripts' );
 
 // Show goals for PMPro levels funds raised. Quick example.
 function pmpro_goal_progress_bar_shortcode( $atts ) {
 	global $wpdb, $pmpro_currency_symbol;
 
-	// enqueue script and styles.
+	// enqueue script when shortcode is called.
 	wp_enqueue_script( 'pmpro-goals-progress-js' );
-	wp_enqueue_style( 'pmpro-goals-progress-css' );
 
 	extract( shortcode_atts( array(
 		'level' => NULL,
@@ -121,7 +118,7 @@ function pmpro_goal_progress_bar_shortcode( $atts ) {
 
 		if ( false === get_transient( "pmpro_goals_" . $hashkey )  ) {
 
-			$sql = "SELECT total FROM $wpdb->pmpro_membership_orders WHERE membership_id IN(" . implode(",", $levels) . ") AND status = 'success'";
+			$sql = "SELECT total FROM $wpdb->pmpro_membership_orders WHERE membership_id IN(" . implode(",", $levels) . ") AND status IN('success', '')";
 
 			$results = $wpdb->get_results( $sql );
 
@@ -137,7 +134,7 @@ function pmpro_goal_progress_bar_shortcode( $atts ) {
 				$total = 0;
 			}
 
-			set_transient( 'pmpro_goals_' . $hashkey, $total, 1 * HOUR_IN_SECONDS );	
+			set_transient( 'pmpro_goals_' . $hashkey, $total, 12 * HOUR_IN_SECONDS );	
 
 		} else {
 			$total = get_transient( 'pmpro_goals_' . $hashkey );
@@ -152,10 +149,16 @@ function pmpro_goal_progress_bar_shortcode( $atts ) {
 		}
 
 		if ( false === get_transient( "pmpro_goals_" . $hashkey )  ) {
-		$sql = "SELECT COUNT(user_id) AS total FROM $wpdb->pmpro_memberships_users WHERE membership_id IN(" . implode(",", $levels) . ") AND status = 'active'"; 
-		$total = $wpdb->get_var( $sql );
+			$sql = "SELECT COUNT(user_id) AS total FROM $wpdb->pmpro_memberships_users WHERE membership_id IN(" . implode( ",", $levels ) . ") AND status = 'active'"; 
+
+			$total = $wpdb->get_var( $sql );
+
+			set_transient( 'pmpro_goals_' . $hashkey, $total, 12 * HOUR_IN_SECONDS );	
+
 		} else {
+
 			$total = get_transient( "pmpro_goals_" . $hashkey );
+
 		}
 
 		$after_total_amount_text =  ' / ' . $goal . ' ' . $after;
@@ -213,3 +216,25 @@ function pmpro_goal_progress_bar_shortcode( $atts ) {
 	return $shortcode_content;
 }
 add_shortcode( 'pmpro_goal', 'pmpro_goal_progress_bar_shortcode' );
+
+
+function pmpro_goals_delete_transients_when_orders() {
+	pmpro_goals_delete_transients();
+}
+add_action( 'pmpro_added_order', 'pmpro_goals_delete_transients_when_orders' );
+add_action( 'pmpro_updated_order', 'pmpro_goals_delete_transients_when_orders' );
+
+function pmpro_goals_delete_transients() {
+	global $wpdb;
+
+	$sql = "SELECT `option_name` FROM $wpdb->options WHERE `option_name` LIKE '%_pmpro_goal_%'";
+
+	$results = $wpdb->get_results( $sql );
+
+	foreach( $results as $key => $value ) {
+		if ( strpos( $value->option_name, 'timeout' ) === false ) {
+			$transient = ltrim( $value->option_name, '_transient_' );
+			delete_transient( $transient );
+		}
+	}	
+}
