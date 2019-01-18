@@ -80,7 +80,7 @@ function pmpro_goal_progress_bar_shortcode( $atts ) {
 		'fill_color' => '#f7f7f7',
 		'background_color' => '#ff008c',
 		'font_color' => '#FFF',
-		'type' => NULL, 
+		'goal_type' => NULL, 
 		'before' => NULL,
 	), $atts ) );
 	//if levels is used instead of level
@@ -93,7 +93,7 @@ function pmpro_goal_progress_bar_shortcode( $atts ) {
 	$fill_color = esc_attr( $fill_color );
 	$background_color = esc_attr( $background_color );
 	$font_color = esc_attr( $font_color );
-	$type = esc_attr( $type );
+	$goal_type = esc_attr( $goal_type );
 	$total = 0;
 	$goal_reached = false;
 
@@ -102,8 +102,8 @@ function pmpro_goal_progress_bar_shortcode( $atts ) {
 		return "<span class='pmpro-warning'>" . __( 'Please insert a valid level(s)', 'pmpro-goals' ) . "</span>";
 	}
 
-	if ( empty( $type ) || 'members' !== $type ) {
-		$type = 'revenue';
+	if ( empty( $goal_type ) || 'members' !== $goal_type ) {
+		$goal_type = 'revenue';
 	}
 
 	// This is used to create a level string that can be hashed.
@@ -117,10 +117,10 @@ function pmpro_goal_progress_bar_shortcode( $atts ) {
 	}
 
 	// Check hash for transients.
-	$to_hash = md5( $goal . $after . $fill_color . $background_color . $font_color . $type . $levels_for_hash );
+	$to_hash = md5( $goal . $after . $fill_color . $background_color . $font_color . $goal_type . $levels_for_hash );
 	$hashkey = substr( $to_hash, 0, 10);
 
-	if ( 'revenue' === $type ) {
+	if ( 'revenue' === $goal_type ) {
 
 		if ( false === get_transient( "pmpro_goals_" . $hashkey )  ) {
 
