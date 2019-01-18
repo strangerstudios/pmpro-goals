@@ -33,6 +33,30 @@ function pmpro_goals_load_text_domain() {
 }
 add_action( 'plugins_loaded', 'pmpro_goals_load_text_domain' );
 
+
+/**
+ * Register gutenberg block.
+ * @since 1.0
+ */
+function pmpro_goals_register_block() {
+
+	// register script for Gutenberg
+	wp_register_script( 
+		'pmpro-goals-gutenberg', 
+		plugins_url( 'js/gutenberg.build.js', __FILE__ ), 
+		array( 'wp-blocks', 'wp-element', 'wp-editor' )
+	);
+
+	register_block_type( 'pmpro-goals/goal-progress', array(
+		'editor_script' => 'pmpro-goals-gutenberg',
+		'render_callback' => 'pmpro_goal_progress_bar_shortcode'
+	) );
+
+	add_shortcode( 'pmpro_goal', 'pmpro_goal_progress_bar_shortcode' );
+}
+add_action( 'init', 'pmpro_goals_register_block' );
+
+
 function pmpro_goals_register_scripts() {
 
 	wp_register_script( 'pmpro-goals-progress-js', plugins_url( '/js/goalProgress.js', __FILE__ ), array( 'jquery' ), '1.0.0', true );
@@ -42,6 +66,7 @@ add_action( 'wp_enqueue_scripts', 'pmpro_goals_register_scripts' );
 
 // Show goals for PMPro levels funds raised. Quick example.
 function pmpro_goal_progress_bar_shortcode( $atts ) {
+
 	global $wpdb, $pmpro_currency_symbol;
 
 	// enqueue script when shortcode is called.
@@ -63,18 +88,6 @@ function pmpro_goal_progress_bar_shortcode( $atts ) {
 		$level = $levels;
 	}
 
-	//figure out which level/levels to check
-	if ( ! empty( $level ) || $level === "0" || $level === 0 ) {
-	   //they specified a level(s)
-	   if ( strpos( $level, "," ) ) {
-		   //they specified many levels
-		   $levels = explode( ",", $level );
-	   } else {
-		   //they specified just one level
-		   $levels = array( $level );
-	   }	   
-	}
-
 	$goal = intval( $goal );
 	$after = esc_attr( $after );
 	$fill_color = esc_attr( $fill_color );
@@ -93,7 +106,6 @@ function pmpro_goal_progress_bar_shortcode( $atts ) {
 		$type = 'revenue';
 	}
 
-
 	// This is used to create a level string that can be hashed.
 	$levels_for_hash = '';
 	if ( is_array( $levels ) ) {
@@ -110,15 +122,9 @@ function pmpro_goal_progress_bar_shortcode( $atts ) {
 
 	if ( 'revenue' === $type ) {
 
-		if ( empty( $before ) ) {
-			$before = $pmpro_currency_symbol;
-		}elseif ( 'false' === $before ) {
-			$before = '';
-		}
-
 		if ( false === get_transient( "pmpro_goals_" . $hashkey )  ) {
 
-			$sql = "SELECT total FROM $wpdb->pmpro_membership_orders WHERE membership_id IN(" . implode(",", $levels) . ") AND status IN('success', '')";
+			$sql = "SELECT total FROM $wpdb->pmpro_membership_orders WHERE membership_id IN(" . implode(",", $levels) . ") AND status = 'success'";
 
 			$results = $wpdb->get_results( $sql );
 
@@ -144,10 +150,6 @@ function pmpro_goal_progress_bar_shortcode( $atts ) {
 
 	} else {
 
-		if ( 'false' === $before ) {
-			$before = '';
-		}
-
 		if ( false === get_transient( "pmpro_goals_" . $hashkey )  ) {
 			$sql = "SELECT COUNT(user_id) AS total FROM $wpdb->pmpro_memberships_users WHERE membership_id IN(" . implode( ",", $levels ) . ") AND status = 'active'"; 
 
@@ -170,7 +172,6 @@ function pmpro_goal_progress_bar_shortcode( $atts ) {
 	 * @since 1.0
 	 */
 	$after = apply_filters( 'pmpro_goals_after', $after_total_amount_text );
-
 	ob_start();
 	?>
 	<script type="text/javascript">
@@ -187,6 +188,8 @@ function pmpro_goal_progress_bar_shortcode( $atts ) {
 	<style type="text/css">
 		.goalProgress {
 			background: <?php echo $background_color; ?>;
+			margin-top:2%;
+			margin-bottom:2%;
 			padding: 5px;
 		}
 		div.progressBar {
@@ -198,7 +201,6 @@ function pmpro_goal_progress_bar_shortcode( $atts ) {
 			font-weight: 700;
 			padding: 10px;
 			display: block;
-			/*overflow:hidden;*/
 			width: 5px;
 		}
 	</style>	
@@ -215,7 +217,6 @@ function pmpro_goal_progress_bar_shortcode( $atts ) {
 
 	return $shortcode_content;
 }
-add_shortcode( 'pmpro_goal', 'pmpro_goal_progress_bar_shortcode' );
 
 
 function pmpro_goals_delete_transients_when_orders() {
@@ -236,5 +237,6 @@ function pmpro_goals_delete_transients() {
 			$transient = ltrim( $value->option_name, '_transient_' );
 			delete_transient( $transient );
 		}
-	}	
+	}
+	
 }
