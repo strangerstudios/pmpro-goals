@@ -56,29 +56,18 @@ function pmpro_goals_register_block() {
 }
 add_action( 'init', 'pmpro_goals_register_block' );
 
-
-function pmpro_goals_register_scripts() {
-
-	wp_register_script( 'pmpro-goals-progress-js', plugins_url( '/js/goalProgress.js', __FILE__ ), array( 'jquery' ), '1.0.0', true );
-
-}
-add_action( 'wp_enqueue_scripts', 'pmpro_goals_register_scripts' );
-
 // Show goals for PMPro levels funds raised. Quick example.
 function pmpro_goal_progress_bar_shortcode( $atts ) {
 
 	global $wpdb, $pmpro_currency_symbol;
-
-	// enqueue script when shortcode is called.
-	wp_enqueue_script( 'pmpro-goals-progress-js' );
 
 	extract( shortcode_atts( array(
 		'level' => NULL,
 		'levels' => NULL,
 		'goal' => NULL,
 		'after' => NULL,
-		'fill_color' => '#f7f7f7',
-		'background_color' => '#ff008c',
+		'fill_color' => '#77A02E',
+		'background_color' => '#2497C8',
 		'font_color' => '#FFF',
 		'goal_type' => NULL, 
 		'before' => NULL,
@@ -100,6 +89,10 @@ function pmpro_goal_progress_bar_shortcode( $atts ) {
 	
 	if ( empty( $levels ) ) {
 		return "<span class='pmpro-warning'>" . __( 'Please insert a valid level(s)', 'pmpro-goals' ) . "</span>";
+	}
+
+	if ( empty( $goal ) || $goal === 0 ) {
+		return "<span class='pmpro-warning'>" . __( 'Goal amount is invalid.', 'pmpro-goals' ) . "</span>";
 	}
 
 	if ( empty( $goal_type ) || 'members' !== $goal_type ) {
@@ -171,46 +164,26 @@ function pmpro_goal_progress_bar_shortcode( $atts ) {
 	 * @return string The text after the total amount.
 	 * @since 1.0
 	 */
-	$after = apply_filters( 'pmpro_goals_after', $after_total_amount_text );
+	$after_text = apply_filters( 'pmpro_goals_after', $after_total_amount_text );
+
+
+	$percentage = intval( ( $total / $goal ) * 100 );
+
+	if ( $percentage > 100 ) {
+		$percentage = 100;
+	}
+
 	ob_start();
-	?>
-	<script type="text/javascript">
-		jQuery(document).ready(function(){
-		    jQuery('#pmpro_goal_progress_bar').goalProgress({
-		        goalAmount: <?php echo $goal; ?>,
-		        currentAmount: <?php echo $total; ?>,
-		        textBefore: "<?php echo $before; ?>",
-		        textAfter: "<?php echo $after; ?> ",
-		    });
-		});
-	</script>
-
-	<style type="text/css">
-		.goalProgress {
-			background: <?php echo $background_color; ?>;
-			margin-top:2%;
-			margin-bottom:2%;
-			padding: 5px;
-		}
-		div.progressBar {
-			background: <?php echo $fill_color; ?>;
-			color: <?php echo $font_color; ?>;
-			font-size: 2rem;
-			font-family: 'helvetica neue', helvetica, arial, sans-serif;
-			letter-spacing: -1px;
-			font-weight: 700;
-			padding: 10px;
-			display: block;
-			width: 5px;
-		}
-	</style>	
-	
-	<div class="pmpro_goal_container">
+	?>	
 		<?php do_action( 'pmpro_before_progress_bar' ); ?>
-			<div id="pmpro_goal_progress_bar"></div>
-		<?php do_action( 'pmpro_after_progress_bar' ); ?>
-	</div>
+				<div class="pmpro-goalProgress" style="<?php echo 'background:' . $background_color; ?>;margin-top:2%;margin-bottom:2%;padding: 5px;">
+					<span class="pmpro-progress-bar-content" style="position:absolute;max-width:100%;<?php echo 'color:' . $font_color; ?>;font-size: 1.5rem; font-family: 'helvetica neue', helvetica, arial, sans-serif; font-weight: 700;padding: 10px;">
+							<?php echo $before . $total . $after_text; ?>
+						</span>
+					<div class="pmpro-progressBar" style="<?php echo 'background:' . $fill_color; ?>; <?php echo 'width:' . $percentage . '%'?>;height:50px;"></div>
+				</div>
 
+		<?php do_action( 'pmpro_after_progress_bar' ); ?>
 <?php
 
 	$shortcode_content = ob_get_clean();

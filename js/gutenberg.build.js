@@ -109,15 +109,15 @@ registerBlockType('pmpro-goals/goal-progress', {
 		},
 		fill_color: {
 			type: 'string',
-			default: '#f7f7f7'
+			default: '#77A02E'
 		},
 		background_color: {
 			type: 'string',
-			default: '#ff008c'
+			default: '#2497C8'
 		},
 		font_color: {
 			type: 'string',
-			default: '#ff008c'
+			default: '#FFF'
 		},
 		goal_type: {
 			type: 'string',
@@ -232,11 +232,6 @@ registerBlockType('pmpro-goals/goal-progress', {
 		), wp.element.createElement(
 			'div',
 			{ className: className },
-			wp.element.createElement(
-				'h2',
-				null,
-				'PMPro Goal'
-			),
 			wp.element.createElement(
 				'div',
 				{ className: 'pmpro-goals-container', style: { backgroundColor: background_color, color: font_color, padding: '5px' } },

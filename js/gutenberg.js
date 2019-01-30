@@ -52,15 +52,15 @@ registerBlockType(
 			},
 			fill_color: {
 				type: 'string',
-				default: '#f7f7f7'
+				default: '#77A02E'
 			},
 			background_color: {
 				type: 'string',
-				default: '#ff008c'
+				default: '#2497C8'
 			},
 			font_color: {
 				type: 'string',
-				default: '#ff008c'
+				default: '#FFF'
 			},
 			goal_type: {
 				type: 'string',
