@@ -1,8 +1,8 @@
 module.exports = {
-	entry: './js/gutenberg.js',
+	entry: './js/pmpro-goals-block.js',
 	output: {
 		path: __dirname,
-		filename: 'js/gutenberg.build.js',
+		filename: 'js/pmpro-goals-block.build.js',
 	},
 	module: {
 		loaders: [

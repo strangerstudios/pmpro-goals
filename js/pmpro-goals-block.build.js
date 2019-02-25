@@ -79,7 +79,6 @@ var _wp$components = wp.components,
     PanelRow = _wp$components.PanelRow,
     SelectControl = _wp$components.SelectControl,
     TextControl = _wp$components.TextControl,
-    RangeControl = _wp$components.RangeControl,
     ColorPalette = _wp$components.ColorPalette;
 var _wp$editor = wp.editor,
     RichText = _wp$editor.RichText,
@@ -90,7 +89,7 @@ var all_levels = pmpro.all_level_values_and_labels;
 
 var goal_types = [{ value: 'revenue', label: 'Revenue' }, { value: 'members', label: 'Members' }];
 
-var default_colors = [{ color: "#ff7675", name: 'red' }, { color: "#55efc4", name: 'green' }, { color: "#74b9ff", name: 'blue' }];
+var default_colors = [{ color: "#fff", name: 'white' }, { color: "#77A02E", name: 'green' }, { color: "#2497C8", name: 'blue' }];
 
 registerBlockType('pmpro-goals/goal-progress', {
 	title: __('PMPro Goal', 'pmpro-goals'),
@@ -175,12 +174,12 @@ registerBlockType('pmpro-goals/goal-progress', {
 					onChange: function onChange(levels) {
 						setAttributes({ levels: levels });
 					},
-					help: 'Hold shift down to select multiple levels.'
+					help: 'Hold shift/control down to select multiple levels.'
 				}),
 				wp.element.createElement(TextControl, {
 					id: 'pmpro-goals-before',
 					label: 'Text Before',
-					help: 'This will show text before total and goal amount. Ideal to show currency.',
+					help: 'This will show text before the calculation.',
 					value: before,
 					onChange: function onChange(before) {
 						setAttributes({ before: before });
@@ -229,18 +228,114 @@ registerBlockType('pmpro-goals/goal-progress', {
 					}
 				})
 			)
+		),
+
+		/**	
+   * Inline Settings for PMPro Goals.
+   * This is only to show the main settings for PMPro Goals.
+   */
+		isSelected && wp.element.createElement(
+			'div',
+			{ className: className },
+			wp.element.createElement(
+				'p',
+				null,
+				wp.element.createElement(
+					'strong',
+					null,
+					'PMPro Goal Settings'
+				),
+				' ',
+				wp.element.createElement(
+					'span',
+					{ style: { fontSize: '12px' } },
+					wp.element.createElement(
+						'em',
+						null,
+						'Please use the Block Settings widget for additional settings.'
+					)
+				)
+			),
+			wp.element.createElement(
+				PanelBody,
+				null,
+				wp.element.createElement(SelectControl, {
+					label: 'Select the type of goal.',
+					options: goal_types,
+					value: goal_type,
+					onChange: function onChange(goal_type) {
+						setAttributes({ goal_type: goal_type });
+					}
+				}),
+				wp.element.createElement(SelectControl, {
+					multiple: true,
+					label: __('Select the level(s) you would like to track.'),
+					value: levels,
+					onChange: function onChange(levels) {
+						setAttributes({ levels: levels });
+					},
+					options: all_levels
+				}),
+				wp.element.createElement(TextControl, {
+					id: 'pmpro-goals-goal',
+					label: 'Goal Amount',
+					value: goal,
+					onChange: function onChange(goal) {
+						setAttributes({ goal: goal });
+					}
+				}),
+				wp.element.createElement(TextControl, {
+					id: 'pmpro-goals-after',
+					label: 'Text After',
+					value: after,
+					onChange: function onChange(after) {
+						setAttributes({ after: after });
+					}
+				}),
+				wp.element.createElement(TextControl, {
+					id: 'pmpro-goals-before',
+					label: 'Text Before',
+					value: before,
+					onChange: function onChange(before) {
+						setAttributes({ before: before });
+					}
+				}),
+				__('Font Color', 'pmpro-goals'),
+				wp.element.createElement(ColorPalette, {
+					colors: default_colors,
+					value: font_color,
+					onChange: function onChange(font_color) {
+						setAttributes({ font_color: font_color });
+					}
+				}),
+				__('Fill Color', 'pmpro-goals'),
+				wp.element.createElement(ColorPalette, {
+					colors: default_colors,
+					value: fill_color,
+					onChange: function onChange(fill_color) {
+						setAttributes({ fill_color: fill_color });
+					}
+				}),
+				__('Background Color', 'pmpro-goals'),
+				wp.element.createElement(ColorPalette, {
+					colors: default_colors,
+					value: background_color,
+					onChange: function onChange(background_color) {
+						setAttributes({ background_color: background_color });
+					}
+				})
+			)
 		), wp.element.createElement(
 			'div',
 			{ className: className },
 			wp.element.createElement(
 				'div',
-				{ className: 'pmpro-goals-container', style: { backgroundColor: background_color, color: font_color, padding: '5px' } },
+				{ className: 'pmpro-goals-container', style: { backgroundColor: background_color, color: font_color, padding: '5px', borderRadius: '5px' } },
 				wp.element.createElement(
 					'div',
 					{ style: { backgroundColor: fill_color, padding: '10px', 'width': '75%' } },
 					before,
-					'X / ',
-					before,
+					' X / ',
 					goal,
 					' ',
 					after

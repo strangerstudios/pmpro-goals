@@ -42,13 +42,13 @@ function pmpro_goals_register_block() {
 
 	// register script for Gutenberg
 	wp_register_script( 
-		'pmpro-goals-gutenberg', 
-		plugins_url( 'js/gutenberg.build.js', __FILE__ ), 
+		'pmpro-goals-block', 
+		plugins_url( 'js/pmpro-goals-block.build.js', __FILE__ ), 
 		array( 'wp-blocks', 'wp-element', 'wp-editor' )
 	);
 
 	register_block_type( 'pmpro-goals/goal-progress', array(
-		'editor_script' => 'pmpro-goals-gutenberg',
+		'editor_script' => 'pmpro-goals-block',
 		'render_callback' => 'pmpro_goal_progress_bar_shortcode'
 	) );
 
@@ -139,7 +139,11 @@ function pmpro_goal_progress_bar_shortcode( $atts ) {
 			$total = get_transient( 'pmpro_goals_' . $hashkey );
 		}
 
-		$after_total_amount_text =  ' / ' . $before . $goal . ' ' . $after;
+		$after_total_amount_text =  ' / ' . pmpro_formatPrice( $goal ) . ' ' . $after;
+
+		$percentage = intval( ( $total / $goal ) * 100 );
+
+		$total = pmpro_formatPrice( $total ); //Format the pricing here for later.
 
 	} else {
 
@@ -157,6 +161,8 @@ function pmpro_goal_progress_bar_shortcode( $atts ) {
 		}
 
 		$after_total_amount_text =  ' / ' . $goal . ' ' . $after;
+
+		$percentage = intval( ( $total / $goal ) * 100 );
 	}
 
 	/**
@@ -165,9 +171,7 @@ function pmpro_goal_progress_bar_shortcode( $atts ) {
 	 * @since 1.0
 	 */
 	$after_text = apply_filters( 'pmpro_goals_after', $after_total_amount_text );
-
-
-	$percentage = intval( ( $total / $goal ) * 100 );
+	
 
 	if ( $percentage > 100 ) {
 		$percentage = 100;
@@ -176,9 +180,9 @@ function pmpro_goal_progress_bar_shortcode( $atts ) {
 	ob_start();
 	?>	
 		<?php do_action( 'pmpro_before_progress_bar' ); ?>
-				<div class="pmpro-goalProgress" style="<?php echo 'background:' . $background_color; ?>;margin-top:2%;margin-bottom:2%;padding: 5px;">
+				<div class="pmpro-goalProgress" style="<?php echo 'background:' . $background_color; ?>;margin-top:2%;margin-bottom:2%;padding: 5px;border-radius:5px;">
 					<span class="pmpro-progress-bar-content" style="position:absolute;max-width:100%;<?php echo 'color:' . $font_color; ?>;font-size: 1.5rem; font-family: 'helvetica neue', helvetica, arial, sans-serif; font-weight: 700;padding: 10px;">
-							<?php echo $before . $total . $after_text; ?>
+							<?php echo $before . ' ' . $total . $after_text; ?>
 						</span>
 					<div class="pmpro-progressBar" style="<?php echo 'background:' . $fill_color; ?>; <?php echo 'width:' . $percentage . '%'?>;height:50px;"></div>
 				</div>

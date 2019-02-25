@@ -2,7 +2,7 @@
   "name": "pmpro-goals",
   "version": "1.0.0",
   "license": "GPL-2.0-or-later",
-  "main": "js/gutenberg.js",
+  "main": "js/pmpro-goals-block.js",
   "devDependencies": {
     "babel-core": "^6.26.3",
     "babel-loader": "^7.1.4",
