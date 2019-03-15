@@ -1,10 +1,10 @@
 <?php
 /**
- * Plugin Name: Paid Memberships Pro Goal Progress
+ * Plugin Name: Paid Memberships Pro - Goal Progress
  * Description: Track Membership and Revenue Goals with Progress Bars.
- * Plugin URI: https://paidmembershipspro.com
- * Author: Stranger Studios
- * Author URI: https://paidmembershipspro.com
+ * Plugin URI: https://wwwpaidmembershipspro.com/add-ons/pmpro-goals/
+ * Author: Paid Memberships Pro
+ * Author URI: https://www.paidmembershipspro.com
  * Version: 1.0
  * License: GPL2 or later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -217,3 +217,18 @@ function pmpro_goals_delete_transients() {
 	}
 	
 }
+
+/*
+	Function to add links to the plugin row meta
+*/
+function pmpro_goals_plugin_row_meta( $links, $file ) {
+	if ( strpos( $file, 'pmpro-goals.php' ) !== false ) {
+		$new_links = array(
+			'<a href="' . esc_url( 'https://www.paidmembershipspro.com/add-ons/pmpro-goals/' )  . '" title="' . esc_attr( __( 'View Documentation', 'paid-memberships-pro' ) ) . '">' . __( 'Docs', 'paid-memberships-pro' ) . '</a>',
+			'<a href="' . esc_url( 'http://paidmembershipspro.com/support/' ) . '" title="' . esc_attr( __( 'Visit Customer Support Area', 'paid-memberships-pro' ) ) . '">' . __( 'Support', 'paid-memberships-pro' ) . '</a>',
+		);
+		$links = array_merge( $links, $new_links );
+	}
+	return $links;
+}
+add_filter( 'plugin_row_meta', 'pmpro_goals_plugin_row_meta', 10, 2 );
