@@ -28,12 +28,6 @@
 
 defined( 'ABSPATH' ) or exit;
 
-function pmpro_goals_load_text_domain() {
-	load_plugin_textdomain( 'pmpro-goals', false, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
-}
-add_action( 'plugins_loaded', 'pmpro_goals_load_text_domain' );
-
-
 /**
  * Register gutenberg block.
  * @since 1.0
@@ -52,7 +46,11 @@ function pmpro_goals_register_block() {
 		'render_callback' => 'pmpro_goal_progress_bar_shortcode'
 	) );
 
+	load_plugin_textdomain( 'pmpro-goals', false, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
+	wp_set_script_translations( 'pmpro-goals-block', 'pmpro-goals', dirname( plugin_basename( __FILE__ ) ) . '/languages' );
+
 	add_shortcode( 'pmpro_goal', 'pmpro_goal_progress_bar_shortcode' );
+	add_shortcode( 'pmpro_goals', 'pmpro_goal_progress_bar_shortcode' );
 }
 add_action( 'init', 'pmpro_goals_register_block' );
 
@@ -62,19 +60,21 @@ function pmpro_goal_progress_bar_shortcode( $atts ) {
 	global $wpdb, $pmpro_currency_symbol;
 
 	extract( shortcode_atts( array(
+		'after' => NULL,
+		'background_color' => '#2497C8',
+		'before' => NULL,
+		'fill_color' => '#77A02E',
+		'font_color' => '#FFF',
+		'goal' => NULL,
+		'goal_type' => NULL, 
 		'level' => NULL,
 		'levels' => NULL,
-		'goal' => NULL,
-		'after' => NULL,
-		'fill_color' => '#77A02E',
-		'background_color' => '#2497C8',
-		'font_color' => '#FFF',
-		'goal_type' => NULL, 
-		'before' => NULL,
 	), $atts ) );
 	//if levels is used instead of level
 	if ( isset( $levels ) && ! isset( $level ) ) {
 		$level = $levels;
+	} else {
+		$levels = $level;
 	}
 
 	$goal = intval( $goal );
@@ -109,6 +109,15 @@ function pmpro_goal_progress_bar_shortcode( $atts ) {
 		$levels_for_hash = $levels;
 	}
 
+	// Generate level data for SQL query.
+	if ( is_array( $levels ) ) {
+		$level_data = implode(",", $levels);
+	} else {
+		$level_data = $level;
+	}
+
+	$level_data = apply_filters( 'pmpro_goals_sql_level_data', $level_data );
+
 	// Check hash for transients.
 	$to_hash = md5( $goal . $after . $fill_color . $background_color . $font_color . $goal_type . $levels_for_hash );
 	$hashkey = substr( $to_hash, 0, 10);
@@ -117,7 +126,7 @@ function pmpro_goal_progress_bar_shortcode( $atts ) {
 
 		if ( false === get_transient( "pmpro_goals_" . $hashkey )  ) {
 
-			$sql = "SELECT total FROM $wpdb->pmpro_membership_orders WHERE membership_id IN(" . implode(",", $levels) . ") AND status = 'success'";
+			$sql = "SELECT total FROM $wpdb->pmpro_membership_orders WHERE membership_id IN(" . $level_data . ") AND status = 'success'";
 
 			$results = $wpdb->get_results( $sql );
 
@@ -148,7 +157,7 @@ function pmpro_goal_progress_bar_shortcode( $atts ) {
 	} else {
 
 		if ( false === get_transient( "pmpro_goals_" . $hashkey )  ) {
-			$sql = "SELECT COUNT(user_id) AS total FROM $wpdb->pmpro_memberships_users WHERE membership_id IN(" . implode( ",", $levels ) . ") AND status = 'active'"; 
+			$sql = "SELECT COUNT(user_id) AS total FROM $wpdb->pmpro_memberships_users WHERE membership_id IN(" . $level_data . ") AND status = 'active'"; 
 
 			$total = $wpdb->get_var( $sql );
 
@@ -195,13 +204,6 @@ function pmpro_goal_progress_bar_shortcode( $atts ) {
 	return $shortcode_content;
 }
 
-
-function pmpro_goals_delete_transients_when_orders() {
-	pmpro_goals_delete_transients();
-}
-add_action( 'pmpro_added_order', 'pmpro_goals_delete_transients_when_orders' );
-add_action( 'pmpro_updated_order', 'pmpro_goals_delete_transients_when_orders' );
-
 function pmpro_goals_delete_transients() {
 	global $wpdb;
 
@@ -214,9 +216,11 @@ function pmpro_goals_delete_transients() {
 			$transient = ltrim( $value->option_name, '_transient_' );
 			delete_transient( $transient );
 		}
-	}
-	
+	}	
 }
+add_action( 'pmpro_added_order', 'pmpro_goals_delete_transients' );
+add_action( 'pmpro_updated_order', 'pmpro_goals_delete_transients' );
+add_action( 'pmpro_after_change_membership_level', 'pmpro_goals_delete_transients' );
 
 /*
 	Function to add links to the plugin row meta

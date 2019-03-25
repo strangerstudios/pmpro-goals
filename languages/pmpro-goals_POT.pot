@@ -1,43 +1,105 @@
-#, fuzzy
+# Copyright (C) 2019 Stranger Studios
+# This file is distributed under the same license as the Paid Memberships Pro Goal Progress plugin.
 msgid ""
 msgstr ""
-"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
-"Project-Id-Version: Paid Memberships Pro Goal Progress\n"
-"POT-Creation-Date: 2019-01-15 15:36+0200\n"
-"PO-Revision-Date: 2019-01-15 15:36+0200\n"
-"Last-Translator: \n"
-"Language-Team: \n"
+"Project-Id-Version: Paid Memberships Pro Goal Progress 1.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/pmpro-goals\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.2\n"
-"X-Poedit-Basepath: ..\n"
-"X-Poedit-Flags-xgettext: --add-comments=translators:\n"
-"X-Poedit-WPHeader: pmpro-goals.php\n"
-"X-Poedit-SourceCharset: UTF-8\n"
-"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
-"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;"
-"_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
-"X-Poedit-SearchPath-0: .\n"
-"X-Poedit-SearchPathExcluded-0: *.js\n"
+"POT-Creation-Date: 2019-03-25T11:53:22+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.1.0\n"
+"X-Domain: pmpro-goals\n"
 
-#: pmpro-goals.php:98
-msgid "Please insert a valid level(s)"
-msgstr ""
-
-#. Plugin Name of the plugin/theme
+#. Plugin Name of the plugin
 msgid "Paid Memberships Pro Goal Progress"
 msgstr ""
 
-#. Plugin URI of the plugin/theme
-#. Author URI of the plugin/theme
+#. Plugin URI of the plugin
+#. Author URI of the plugin
 msgid "https://paidmembershipspro.com"
 msgstr ""
 
-#. Description of the plugin/theme
+#. Description of the plugin
 msgid "Track Membership and Revenue Goals with Progress Bars."
 msgstr ""
 
-#. Author of the plugin/theme
+#. Author of the plugin
 msgid "Stranger Studios"
+msgstr ""
+
+#: pmpro-goals.php:93
+msgid "Please insert a valid level(s)"
+msgstr ""
+
+#: pmpro-goals.php:97
+msgid "Goal amount is invalid."
+msgstr ""
+
+#: js/pmpro-goals-block.js:25
+#: js/pmpro-goals-block.build.js:90
+msgid "Revenue"
+msgstr ""
+
+#: js/pmpro-goals-block.js:26
+#: js/pmpro-goals-block.build.js:90
+msgid "Members"
+msgstr ""
+
+#: js/pmpro-goals-block.js:38
+#: js/pmpro-goals-block.build.js:95
+msgid "PMPro Goal"
+msgstr ""
+
+#: js/pmpro-goals-block.js:39
+#: js/pmpro-goals-block.build.js:96
+msgid "Create a progress bar to show funds raised/member signups."
+msgstr ""
+
+#: js/pmpro-goals-block.js:92
+#: js/pmpro-goals-block.build.js:169
+msgid "PMPro Goal Settings"
+msgstr ""
+
+#: js/pmpro-goals-block.js:95
+#: js/pmpro-goals-block.build.js:178
+msgid "Select the type of goal."
+msgstr ""
+
+#: js/pmpro-goals-block.js:111
+#: js/pmpro-goals-block.build.js:196
+msgid "Goal Amount"
+msgstr ""
+
+#: js/pmpro-goals-block.js:118
+#: js/pmpro-goals-block.build.js:204
+msgid "Text After"
+msgstr ""
+
+#: js/pmpro-goals-block.js:125
+#: js/pmpro-goals-block.build.js:212
+msgid "Text Before"
+msgstr ""
+
+#: js/pmpro-goals-block.js:130
+#: js/pmpro-goals-block.build.js:218
+msgid "Font Color"
+msgstr ""
+
+#: js/pmpro-goals-block.js:137
+#: js/pmpro-goals-block.build.js:226
+msgid "Fill Color"
+msgstr ""
+
+#: js/pmpro-goals-block.js:144
+#: js/pmpro-goals-block.build.js:234
+msgid "Background Color"
+msgstr ""
+
+#: js/pmpro-goals-block.js:159
+#: js/pmpro-goals-block.build.js:267
+msgid "This is a preview of your goal and does not reflect actual data."
 msgstr ""

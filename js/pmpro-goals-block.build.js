@@ -87,7 +87,7 @@ var _wp$editor = wp.editor,
 
 var all_levels = pmpro.all_level_values_and_labels;
 
-var goal_types = [{ value: 'revenue', label: 'Revenue' }, { value: 'members', label: 'Members' }];
+var goal_types = [{ value: 'revenue', label: __('Revenue', 'pmpro-goals') }, { value: 'members', label: __('Members', 'pmpro-goals') }];
 
 var default_colors = [{ color: "#fff", name: 'white' }, { color: "#77A02E", name: 'green' }, { color: "#2497C8", name: 'blue' }];
 
@@ -152,87 +152,10 @@ registerBlockType('pmpro-goals/goal-progress', {
 		    isSelected = props.isSelected;
 
 
-		return [isSelected && wp.element.createElement(
-			InspectorControls,
-			null,
-			wp.element.createElement(
-				PanelBody,
-				null,
-				wp.element.createElement(SelectControl, {
-					label: 'Select the type of goal.',
-					options: goal_types,
-					value: goal_type,
-					onChange: function onChange(goal_type) {
-						setAttributes({ goal_type: goal_type });
-					}
-				}),
-				wp.element.createElement(SelectControl, {
-					multiple: true,
-					label: 'Select the level(s) you would like to track.',
-					options: all_levels,
-					value: levels,
-					onChange: function onChange(levels) {
-						setAttributes({ levels: levels });
-					},
-					help: 'Hold shift/control down to select multiple levels.'
-				}),
-				wp.element.createElement(TextControl, {
-					id: 'pmpro-goals-before',
-					label: 'Text Before',
-					help: 'This will show text before the calculation.',
-					value: before,
-					onChange: function onChange(before) {
-						setAttributes({ before: before });
-					}
-				}),
-				wp.element.createElement(TextControl, {
-					id: 'pmpro-goals-after',
-					label: 'Text After',
-					help: 'This will show text at the end of the bar.',
-					value: after,
-					onChange: function onChange(after) {
-						setAttributes({ after: after });
-					}
-				}),
-				wp.element.createElement(TextControl, {
-					id: 'pmpro-goals-goal',
-					label: 'Goal Amount',
-					help: 'Enter your desired goal amount.',
-					value: goal,
-					onChange: function onChange(goal) {
-						setAttributes({ goal: goal });
-					}
-				}),
-				__('Font Color', 'pmpro-goals'),
-				wp.element.createElement(ColorPalette, {
-					colors: default_colors,
-					value: font_color,
-					onChange: function onChange(font_color) {
-						setAttributes({ font_color: font_color });
-					}
-				}),
-				__('Background Color', 'pmpro-goals'),
-				wp.element.createElement(ColorPalette, {
-					colors: default_colors,
-					value: background_color,
-					onChange: function onChange(background_color) {
-						setAttributes({ background_color: background_color });
-					}
-				}),
-				__('Fill Color', 'pmpro-goals'),
-				wp.element.createElement(ColorPalette, {
-					colors: default_colors,
-					value: fill_color,
-					onChange: function onChange(fill_color) {
-						setAttributes({ fill_color: fill_color });
-					}
-				})
-			)
-		),
+		return [
 
 		/**	
    * Inline Settings for PMPro Goals.
-   * This is only to show the main settings for PMPro Goals.
    */
 		isSelected && wp.element.createElement(
 			'div',
@@ -243,24 +166,16 @@ registerBlockType('pmpro-goals/goal-progress', {
 				wp.element.createElement(
 					'strong',
 					null,
-					'PMPro Goal Settings'
+					__('PMPro Goal Settings', 'pmpro-goals')
 				),
 				' ',
-				wp.element.createElement(
-					'span',
-					{ style: { fontSize: '12px' } },
-					wp.element.createElement(
-						'em',
-						null,
-						'Please use the Block Settings widget for additional settings.'
-					)
-				)
+				wp.element.createElement('span', { style: { fontSize: '12px' } })
 			),
 			wp.element.createElement(
 				PanelBody,
 				null,
 				wp.element.createElement(SelectControl, {
-					label: 'Select the type of goal.',
+					label: __('Select the type of goal.', 'pmpro-goals'),
 					options: goal_types,
 					value: goal_type,
 					onChange: function onChange(goal_type) {
@@ -278,7 +193,7 @@ registerBlockType('pmpro-goals/goal-progress', {
 				}),
 				wp.element.createElement(TextControl, {
 					id: 'pmpro-goals-goal',
-					label: 'Goal Amount',
+					label: __('Goal Amount', 'pmpro-goals'),
 					value: goal,
 					onChange: function onChange(goal) {
 						setAttributes({ goal: goal });
@@ -286,7 +201,7 @@ registerBlockType('pmpro-goals/goal-progress', {
 				}),
 				wp.element.createElement(TextControl, {
 					id: 'pmpro-goals-after',
-					label: 'Text After',
+					label: __('Text After', 'pmpro-goals'),
 					value: after,
 					onChange: function onChange(after) {
 						setAttributes({ after: after });
@@ -294,7 +209,7 @@ registerBlockType('pmpro-goals/goal-progress', {
 				}),
 				wp.element.createElement(TextControl, {
 					id: 'pmpro-goals-before',
-					label: 'Text Before',
+					label: __('Text Before', 'pmpro-goals'),
 					value: before,
 					onChange: function onChange(before) {
 						setAttributes({ before: before });
@@ -333,12 +248,23 @@ registerBlockType('pmpro-goals/goal-progress', {
 				{ className: 'pmpro-goals-container', style: { backgroundColor: background_color, color: font_color, padding: '5px', borderRadius: '5px' } },
 				wp.element.createElement(
 					'div',
-					{ style: { backgroundColor: fill_color, padding: '10px', 'width': '75%' } },
+					{ style: { backgroundColor: fill_color, padding: '10px', 'width': '50%' } },
 					before,
-					' X / ',
+					' ',
+					goal * .5,
+					' / ',
 					goal,
 					' ',
 					after
+				)
+			),
+			wp.element.createElement(
+				'small',
+				null,
+				wp.element.createElement(
+					'em',
+					null,
+					__('This is a preview of your goal and does not reflect actual data.', 'pmpro-goals')
 				)
 			)
 		)];
