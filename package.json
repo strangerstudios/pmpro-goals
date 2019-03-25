@@ -4,6 +4,7 @@
   "license": "GPL-2.0-or-later",
   "main": "js/pmpro-goals-block.js",
   "devDependencies": {
+    "@wordpress/babel-preset-default": "^1.2.0",
     "babel-core": "^6.26.3",
     "babel-loader": "^7.1.4",
     "babel-plugin-transform-react-jsx": "^6.24.1",
