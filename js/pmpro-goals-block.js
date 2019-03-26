@@ -12,6 +12,7 @@ const {
 	SelectControl,
 	TextControl,
 	ColorPalette,
+	DateTimePicker
 } = wp.components;
 
 const {
@@ -32,7 +33,7 @@ const default_colors = [
 	{ color: "#BBBBBB", name: 'grey' }
 ];
 
-registerBlockType(
+export default registerBlockType(
 	'pmpro-goals/goal-progress',
 	{
 		title: __( 'Goal Progress Bar', 'pmpro-goals' ),
@@ -73,6 +74,14 @@ registerBlockType(
 				type: 'string',
 				default: ''
 			},
+			start_date: {
+				type: 'string',
+				default: ''
+			},	
+			end_date: {
+				type: 'string',
+				default: ''
+			},
 			goal: {
 				type: 'string',
 				default: 0
@@ -81,10 +90,9 @@ registerBlockType(
 
 		edit: props => {
 
-			const { attributes: { goal_type, levels, before, after, goal, revenue, font_color, background_color, fill_color }, className, setAttributes, isSelected } = props;
+			const { attributes: { goal_type, levels, before, after, goal, revenue, font_color, background_color, fill_color, start_date, end_date }, className, setAttributes, isSelected } = props;
 
 			return[
-
 				/**	
 				 * Inline Settings for PMPro Goals.
 				 */
@@ -110,7 +118,7 @@ registerBlockType(
 						id="pmpro-goals-goal"
 						label={ __( 'Goal Amount', 'pmpro-goals' ) }
 						value={ goal }
-						onChange={ goal => { setAttributes( {goal } ) } }
+						onChange={ goal => { setAttributes( {  goal } ) } }
 					/>
 
 					<TextControl
@@ -125,6 +133,22 @@ registerBlockType(
 						label={ __( 'Text After', 'pmpro-goals' ) }
 						value={ after }
 						onChange={ after => { setAttributes( { after } ) } }
+					/>
+
+					{ __( 'Start Date', 'pmpro-goals' ) }
+					<br/><small>{ __( 'Set the start date to track statistics from this day onwards.' ) }</small>
+					<DateTimePicker
+						currentDate={ start_date }
+						onChange={ start_date => { setAttributes( { start_date } ) } }
+						is12Hour={ false }
+					/>
+
+					{ __( 'End Date', 'pmpro-goals' ) }
+					<br/><small>{ __( 'Set the end date to track statistics up until this day.' ) }</small>
+					<DateTimePicker
+						currentDate={ end_date }
+						onChange={ end_date => { setAttributes( { end_date } ) } }
+						is12Hour={ false }
 					/>
 
 					{ __( 'Font Color', 'pmpro-goals' ) }

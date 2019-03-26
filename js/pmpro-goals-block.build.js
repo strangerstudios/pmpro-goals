@@ -60,13 +60,16 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 0);
+/******/ 	return __webpack_require__(__webpack_require__.s = 12);
 /******/ })
 /************************************************************************/
-/******/ ([
-/* 0 */
-/***/ (function(module, exports) {
+/******/ ({
 
+/***/ 12:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 var _wp$i18n = wp.i18n,
     __ = _wp$i18n.__,
     setLocaleData = _wp$i18n.setLocaleData;
@@ -79,7 +82,8 @@ var _wp$components = wp.components,
     PanelRow = _wp$components.PanelRow,
     SelectControl = _wp$components.SelectControl,
     TextControl = _wp$components.TextControl,
-    ColorPalette = _wp$components.ColorPalette;
+    ColorPalette = _wp$components.ColorPalette,
+    DateTimePicker = _wp$components.DateTimePicker;
 var _wp$editor = wp.editor,
     RichText = _wp$editor.RichText,
     InspectorControls = _wp$editor.InspectorControls;
@@ -91,7 +95,7 @@ var goal_types = [{ value: 'revenue', label: __('Revenue', 'pmpro-goals') }, { v
 
 var default_colors = [{ color: "#FFFFFF", name: 'white' }, { color: "#77A02E", name: 'green' }, { color: "#BBBBBB", name: 'grey' }];
 
-registerBlockType('pmpro-goals/goal-progress', {
+/* harmony default export */ __webpack_exports__["default"] = (registerBlockType('pmpro-goals/goal-progress', {
 	title: __('Goal Progress Bar', 'pmpro-goals'),
 	description: __('Create a progress bar to show funds raised/member signups.', 'pmpro-goals'),
 	category: 'pmpro',
@@ -130,6 +134,14 @@ registerBlockType('pmpro-goals/goal-progress', {
 			type: 'string',
 			default: ''
 		},
+		start_date: {
+			type: 'string',
+			default: ''
+		},
+		end_date: {
+			type: 'string',
+			default: ''
+		},
 		goal: {
 			type: 'string',
 			default: 0
@@ -147,13 +159,14 @@ registerBlockType('pmpro-goals/goal-progress', {
 		    font_color = _props$attributes.font_color,
 		    background_color = _props$attributes.background_color,
 		    fill_color = _props$attributes.fill_color,
+		    start_date = _props$attributes.start_date,
+		    end_date = _props$attributes.end_date,
 		    className = props.className,
 		    setAttributes = props.setAttributes,
 		    isSelected = props.isSelected;
 
 
 		return [
-
 		/**	
    * Inline Settings for PMPro Goals.
    */
@@ -215,6 +228,34 @@ registerBlockType('pmpro-goals/goal-progress', {
 						setAttributes({ after: after });
 					}
 				}),
+				__('Start Date', 'pmpro-goals'),
+				wp.element.createElement('br', null),
+				wp.element.createElement(
+					'small',
+					null,
+					__('Set the start date to track statistics from this day onwards.')
+				),
+				wp.element.createElement(DateTimePicker, {
+					currentDate: start_date,
+					onChange: function onChange(start_date) {
+						setAttributes({ start_date: start_date });
+					},
+					is12Hour: false
+				}),
+				__('End Date', 'pmpro-goals'),
+				wp.element.createElement('br', null),
+				wp.element.createElement(
+					'small',
+					null,
+					__('Set the end date to track statistics up until this day.')
+				),
+				wp.element.createElement(DateTimePicker, {
+					currentDate: end_date,
+					onChange: function onChange(end_date) {
+						setAttributes({ end_date: end_date });
+					},
+					is12Hour: false
+				}),
 				__('Font Color', 'pmpro-goals'),
 				wp.element.createElement(ColorPalette, {
 					colors: default_colors,
@@ -273,7 +314,8 @@ registerBlockType('pmpro-goals/goal-progress', {
 	save: function save(props) {
 		return null;
 	}
-});
+}));
 
 /***/ })
-/******/ ]);
+
+/******/ });

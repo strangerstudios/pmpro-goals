@@ -54,6 +54,19 @@ function pmpro_goals_register_block() {
 }
 add_action( 'init', 'pmpro_goals_register_block' );
 
+function pmpro_goals_block_editor_assets() {
+
+	$editor_css_path = '/css/pmpro-goals-editor.css';
+
+	wp_enqueue_style( 
+		'pmpro-goals-editor-css',
+		plugins_url( $editor_css_path, __FILE__ )
+		//array( 'wp-blocks', 'wp-element', 'wp-components' )
+		// filemtime( plugin_dir_path( __FILE__ ) . $editor_css_path ) 
+	);
+}
+add_action( 'enqueue_block_editor_assets', 'pmpro_goals_block_editor_assets' );
+
 // Show goals for PMPro levels funds raised. Quick example.
 function pmpro_goal_progress_bar_shortcode( $atts ) {
 
@@ -63,12 +76,14 @@ function pmpro_goal_progress_bar_shortcode( $atts ) {
 		'after' => NULL,
 		'background_color' => '#BBBBBB',
 		'before' => NULL,
+		'end_date' => NULL,
 		'fill_color' => '#77A02E',
 		'font_color' => '#FFFFFF',
 		'goal' => NULL,
 		'goal_type' => NULL, 
 		'level' => NULL,
 		'levels' => NULL,
+		'start_date' => NULL
 	), $atts ) );
 	//if levels is used instead of level
 	if ( isset( $levels ) && ! isset( $level ) ) {
@@ -86,7 +101,6 @@ function pmpro_goal_progress_bar_shortcode( $atts ) {
 	$total = 0;
 	$goal_reached = false;
 
-	
 	if ( empty( $levels ) ) {
 		return "<span class='pmpro-warning'>" . __( 'Please insert a valid level(s)', 'pmpro-goals' ) . "</span>";
 	}
@@ -119,14 +133,31 @@ function pmpro_goal_progress_bar_shortcode( $atts ) {
 	$level_data = apply_filters( 'pmpro_goals_sql_level_data', $level_data );
 
 	// Check hash for transients.
-	$to_hash = md5( $goal . $after . $fill_color . $background_color . $font_color . $goal_type . $levels_for_hash );
+	$to_hash = md5( $goal . $after . $fill_color . $background_color . $font_color . $goal_type . $start_date . $end_date . $levels_for_hash );
 	$hashkey = substr( $to_hash, 0, 10);
+
+	if ( ! empty( $start_date ) ) {
+		$start_date = date( 'Y-m-d', strtotime( $start_date ) );
+	}
+
+	if ( ! empty( $end_date ) ) {
+		$end_date = date( 'Y-m-d', strtotime( $end_date ) );
+
+	}
 
 	if ( 'revenue' === $goal_type ) {
 
 		if ( false === get_transient( "pmpro_goals_" . $hashkey )  ) {
 
 			$sql = "SELECT total FROM $wpdb->pmpro_membership_orders WHERE membership_id IN(" . $level_data . ") AND status = 'success'";
+
+			if ( ! empty( $start_date ) ) {
+				$sql .= " AND timestamp >= '" . esc_sql( $start_date ) . "'";
+			}
+
+			if ( ! empty( $end_date ) ) {
+				$sql .= " AND timestamp <= '" . esc_sql( $end_date ) . "'";
+			}
 
 			$results = $wpdb->get_results( $sql );
 
@@ -159,7 +190,15 @@ function pmpro_goal_progress_bar_shortcode( $atts ) {
 	} else {
 
 		if ( false === get_transient( "pmpro_goals_" . $hashkey )  ) {
-			$sql = "SELECT COUNT(user_id) AS total FROM $wpdb->pmpro_memberships_users WHERE membership_id IN(" . $level_data . ") AND status = 'active'"; 
+			$sql = "SELECT COUNT(user_id) AS total FROM $wpdb->pmpro_memberships_users WHERE membership_id IN(" . $level_data . ") AND status = 'active'";
+
+			if ( ! empty( $start_date ) ) {
+				$sql .= " AND timestamp >= '" . esc_sql( $start_date ) . "'";
+			}
+
+			if ( ! empty( $end_date ) ) {
+				$sql .= " AND timestamp <= '" . esc_sql( $end_date ) . "'";
+			}
 
 			$total = $wpdb->get_var( $sql );
 
