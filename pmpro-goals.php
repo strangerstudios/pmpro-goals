@@ -79,9 +79,9 @@ function pmpro_goal_progress_bar_shortcode( $atts ) {
 
 	$goal = intval( $goal );
 	$after = esc_attr( $after );
-	$fill_color = esc_attr( $fill_color );
-	$background_color = esc_attr( $background_color );
-	$font_color = esc_attr( $font_color );
+	$fill_color = sanitize_hex_color( $fill_color );
+	$background_color = sanitize_hex_color( $background_color );
+	$font_color = sanitize_hex_color( $font_color );
 	$goal_type = esc_attr( $goal_type );
 	$total = 0;
 	$goal_reached = false;
