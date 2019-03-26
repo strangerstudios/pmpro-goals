@@ -27,20 +27,20 @@ const goal_types = [
 ];
 
 const default_colors = [
-	{ color: "#fff", name: 'white' },
+	{ color: "#FFFFFF", name: 'white' },
 	{ color: "#77A02E", name: 'green' },
-	{ color: "#2497C8", name: 'blue' }
+	{ color: "#BBBBBB", name: 'grey' }
 ];
 
 registerBlockType(
 	'pmpro-goals/goal-progress',
 	{
-		title: __( 'PMPro Goal', 'pmpro-goals' ),
+		title: __( 'Goal Progress Bar', 'pmpro-goals' ),
 		description: __( 'Create a progress bar to show funds raised/member signups.', 'pmpro-goals'),
 		category: 'pmpro',
 		icon: {
-			background: '#2997c8',
-			foreground: '#ffffff',
+			background: '#2997C8',
+			foreground: '#FFFFFF',
 			src: 'chart-area'
 		},
 
@@ -55,21 +55,21 @@ registerBlockType(
 			},
 			background_color: {
 				type: 'string',
-				default: '#2497C8'
+				default: '#BBBBBB'
 			},
 			font_color: {
 				type: 'string',
-				default: '#FFF'
+				default: '#FFFFFF'
 			},
 			goal_type: {
 				type: 'string',
 				default: 'revenue'
 			},
-			before: {
+			after: {
 				type: 'string',
 				default: ''
 			},
-			after: {
+			before: {
 				type: 'string',
 				default: ''
 			},
@@ -89,10 +89,10 @@ registerBlockType(
 				 * Inline Settings for PMPro Goals.
 				 */
 				 isSelected && <div className={ className } >
-                  <p><strong>{ __( 'PMPro Goal Settings', 'pmpro-goals' ) }</strong> <span style={ { fontSize: '12px' } }></span></p>
+                  <p><strong>{ __( 'Goal Progress Bar Settings', 'pmpro-goals' ) }</strong> <span style={ { fontSize: '12px' } }></span></p>
                   <PanelBody>
                   	<SelectControl 
-						label={ __( 'Select the type of goal.', 'pmpro-goals' ) }
+						label={ __( 'Type of Goal', 'pmpro-goals' ) }
 						options={goal_types}
 						value={goal_type}
 						onChange={ goal_type => { setAttributes( { goal_type } ) } }
@@ -100,7 +100,7 @@ registerBlockType(
 
                     <SelectControl
                     	multiple
-                    	label={ __( 'Select the level(s) you would like to track.' ) }
+                    	label={ __( 'Levels to Track' ) }
                     	value={ levels }
                     	onChange={ levels => { setAttributes( { levels } ) } }
                     	options={ all_levels }
@@ -114,17 +114,17 @@ registerBlockType(
 					/>
 
 					<TextControl
-						id="pmpro-goals-after"
-						label={ __( 'Text After', 'pmpro-goals' ) }
-						value={ after }
-						onChange={ after => { setAttributes( { after } ) } }
-					/>
-
-					<TextControl
 						id="pmpro-goals-before"
 						label={ __( 'Text Before', 'pmpro-goals' ) }
 						value={ before }
 						onChange={ before => { setAttributes( { before } ) } }
+					/>
+
+					<TextControl
+						id="pmpro-goals-after"
+						label={ __( 'Text After', 'pmpro-goals' ) }
+						value={ after }
+						onChange={ after => { setAttributes( { after } ) } }
 					/>
 
 					{ __( 'Font Color', 'pmpro-goals' ) }

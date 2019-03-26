@@ -61,10 +61,10 @@ function pmpro_goal_progress_bar_shortcode( $atts ) {
 
 	extract( shortcode_atts( array(
 		'after' => NULL,
-		'background_color' => '#2497C8',
+		'background_color' => '#BBBBBB',
 		'before' => NULL,
 		'fill_color' => '#77A02E',
-		'font_color' => '#FFF',
+		'font_color' => '#FFFFFF',
 		'goal' => NULL,
 		'goal_type' => NULL, 
 		'level' => NULL,
@@ -148,7 +148,9 @@ function pmpro_goal_progress_bar_shortcode( $atts ) {
 			$total = get_transient( 'pmpro_goals_' . $hashkey );
 		}
 
-		$after_total_amount_text =  ' / ' . pmpro_formatPrice( $goal ) . ' ' . $after;
+		$after_total_amount_text =  ' <span class="pmpro_goals-separator">/</span> ';
+		$after_total_amount_text .=  '<span class="pmpro_goals-goal">' . pmpro_formatPrice( $goal ) . '</span>';
+		$after_total_amount_text .=  '<span class="pmpro_goals-after-text">' . $after . '</span>';
 
 		$percentage = intval( ( $total / $goal ) * 100 );
 
@@ -169,7 +171,9 @@ function pmpro_goal_progress_bar_shortcode( $atts ) {
 
 		}
 
-		$after_total_amount_text =  ' / ' . $goal . ' ' . $after;
+		$after_total_amount_text =  ' <span class="pmpro_goals-separator">/</span> ';
+		$after_total_amount_text .=  '<span class="pmpro_goals-goal">' . $goal . '</span>';
+		$after_total_amount_text .=  ' <span class="pmpro_goals-after-text">' . $after . '</span>';
 
 		$percentage = intval( ( $total / $goal ) * 100 );
 	}
@@ -179,7 +183,7 @@ function pmpro_goal_progress_bar_shortcode( $atts ) {
 	 * @return string The text after the total amount.
 	 * @since 1.0
 	 */
-	$after_text = apply_filters( 'pmpro_goals_after', $after_total_amount_text );
+	$after_text = apply_filters( 'pmpro_goals_after_text', $after_total_amount_text );
 	
 
 	if ( $percentage > 100 ) {
@@ -188,15 +192,17 @@ function pmpro_goal_progress_bar_shortcode( $atts ) {
 
 	ob_start();
 	?>	
-		<?php do_action( 'pmpro_before_progress_bar' ); ?>
-				<div class="pmpro-goalProgress" style="<?php echo 'background:' . $background_color; ?>;margin-top:2%;margin-bottom:2%;padding: 5px;border-radius:5px;">
-					<span class="pmpro-progress-bar-content" style="position:absolute;max-width:100%;<?php echo 'color:' . $font_color; ?>;font-size: 1.5rem; font-family: 'helvetica neue', helvetica, arial, sans-serif; font-weight: 700;padding: 10px;">
-							<?php echo $before . ' ' . $total . $after_text; ?>
-						</span>
-					<div class="pmpro-progressBar" style="<?php echo 'background:' . $fill_color; ?>; <?php echo 'width:' . $percentage . '%'?>;height:50px;"></div>
+		<?php do_action( 'pmpro_goals_before_bar' ); ?>
+				<div class="pmpro_goals-bar" style="<?php echo 'background:' . $background_color; ?>;margin-top:1em;margin-bottom:1em;padding: 5px;border-radius:5px;">
+					<span class="pmpro_goals-bar-content" style="position:absolute;max-width:100%;<?php echo 'color:' . $font_color; ?>;font-weight: 700;padding: 10px;">
+							<span class="pmpro_goals-before-text"><?php echo $before; ?></span>
+							<span class="pmpro_goals-total"><?php echo $total; ?></span>
+							<?php echo $after_text; ?>
+					</span>
+					<div class="pmpro_goals-progress" style="<?php echo 'background:' . $fill_color; ?>; <?php echo 'width:' . $percentage . '%'?>;height:50px;"></div>
 				</div>
 
-		<?php do_action( 'pmpro_after_progress_bar' ); ?>
+		<?php do_action( 'pmpro_goals_after_bar' ); ?>
 <?php
 
 	$shortcode_content = ob_get_clean();

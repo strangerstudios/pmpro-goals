@@ -1,4 +1,4 @@
-== Paid Memberships Pro - Paid Memberships Pro - Goals Progress Bar Add On ==
+== Paid Memberships Pro - Goals Progress Bar Add On ==
 Contributors: strangerstudios, andrewlimaza
 Tags: pmpro, paid memberships pro, goals, progress
 Requires at least: 4.0
@@ -13,6 +13,7 @@ Create a dynamic progress bar that can be used in your posts, pages or widgets. 
 
 After installing and activating the plugin, you will be able to add a new Goal Progress Bar via a shortcode or Block (if you are using the Block Editor as part of WordPress v5.0+).
 
+
 == Installation ==
 
 1. Upload the 'pmpro-goals' directory to the '/wp-content/plugins/' directory of your site.
@@ -20,17 +21,32 @@ After installing and activating the plugin, you will be able to add a new Goal P
 
 == Setup ==
 
-The Add On adds a new '[pmpro_goal]' shortcode and a Goal Progress Bar Block.
+This Add On supports a shortcode or block implementation. Sites using the WordPress v5.0+ Block Editor can insert the block via either method. All other sites can use the shortcode method described below. 
 
-Shortcode attributes and Block settings include:
-1. levels: A single or comma-separated list of level IDs to include in the goal tracking; Required. (i.e. “1,2”)
-1. goal_type: The type of goal to track. Default: “revenue”; Accepts: “revenue” or “members”
-1. goal: The numeric goal you would like to reach. Do not include any currency symbol or special characters; Required. (i.e. “1000”)
-1. before: Text to display before the progress text to date.
+Each Goal Progress Bar has unique settings and can be configured to fit your needs. You can set up more than one Goal Progress Bar on a single page or insert them on multiple pages of your site. Both implementations feature the same settings:
+1. Type of Goal: Choose whether your goal is tracking revenue or member count.
+1. Levels to Track: Choose the levels to include in your goal tracking.
+1. Goal Amount: The numeric revenue value (no currency symbol), or the number of signups to reach your goal.
+1. Text Before: Text to display before the Goal Progress value to date.
+1. Text After: Text to display after the total Goal Amount.
+1. Font Color: The color of the text overlaid on the Goal Progress Bar.
+1. Fill Color: The color of the progress “thermometer”.
+1. Background Color: The background color of the entire bar.
+
+If you’re using the WordPress v5.0+ Block Editor, you can place the Goal Progress Bar Block in your posts and pages. If you want to show the same Goal on multiple pages, you can use a “Reusable Block” or copy the same settings from one Block to another.
+
+Here is the format for using the shortcode implementation:
+`[pmpro_goal level="1,2" goal="100" goal_type="members" fill_color="#9932CC"]`
+
+The shortcode attributes include:
 1. after: Text to display after the goal text.
+1. background_color: Hexadecimal color value for background of the entire goal bar. Default: “#BBBBBB”.
+1. before: Text to display before the progress text to date.
 1. fill_color: Hexadecimal color value for the goal’s progress bar. Default: “#77A02E”.
-1. background_color: Hexadecimal color value for background of the entire goal bar. Default: “#2497C8”.
 1. font_color: Hexadecimal color value for the text of the goal bar. Default: “#FFFFFF”.
+1. goal: The numeric goal you would like to reach. Do not include any currency symbol or special characters; Required. (i.e. “1000”)
+1. goal_type: The type of goal to track. Default: “revenue”; Accepts: “revenue” or “members”
+1. levels: A single or comma-separated list of level IDs to include in the goal tracking; Required. (i.e. “1,2”)
 
 == Frequently Asked Questions ==
 
