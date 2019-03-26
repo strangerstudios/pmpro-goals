@@ -150,7 +150,7 @@ function pmpro_goal_progress_bar_shortcode( $atts ) {
 
 		$after_total_amount_text =  ' <span class="pmpro_goals-separator">/</span> ';
 		$after_total_amount_text .=  '<span class="pmpro_goals-goal">' . pmpro_formatPrice( $goal ) . '</span>';
-		$after_total_amount_text .=  '<span class="pmpro_goals-after-text">' . $after . '</span>';
+		$after_total_amount_text .=  ' <span class="pmpro_goals-after-text">' . ' ' . $after . '</span>';
 
 		$percentage = intval( ( $total / $goal ) * 100 );
 
@@ -173,7 +173,7 @@ function pmpro_goal_progress_bar_shortcode( $atts ) {
 
 		$after_total_amount_text =  ' <span class="pmpro_goals-separator">/</span> ';
 		$after_total_amount_text .=  '<span class="pmpro_goals-goal">' . $goal . '</span>';
-		$after_total_amount_text .=  ' <span class="pmpro_goals-after-text">' . $after . '</span>';
+		$after_total_amount_text .=  ' <span class="pmpro_goals-after-text">' . ' ' . $after . '</span>';
 
 		$percentage = intval( ( $total / $goal ) * 100 );
 	}
