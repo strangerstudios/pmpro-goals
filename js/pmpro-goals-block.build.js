@@ -60,12 +60,11 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 12);
+/******/ 	return __webpack_require__(__webpack_require__.s = 0);
 /******/ })
 /************************************************************************/
-/******/ ({
-
-/***/ 12:
+/******/ ([
+/* 0 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -104,7 +103,7 @@ var default_colors = [{ color: "#FFFFFF", name: 'white' }, { color: "#77A02E", n
 		foreground: '#FFFFFF',
 		src: 'chart-area'
 	},
-
+	keywords: [__('pmpro', 'paid-memberships-pro')],
 	attributes: {
 		levels: {
 			type: 'array',
@@ -317,5 +316,4 @@ var default_colors = [{ color: "#FFFFFF", name: 'white' }, { color: "#77A02E", n
 }));
 
 /***/ })
-
-/******/ });
+/******/ ]);

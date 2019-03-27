@@ -44,7 +44,7 @@ export default registerBlockType(
 			foreground: '#FFFFFF',
 			src: 'chart-area'
 		},
-
+		keywords: [ __( 'pmpro', 'paid-memberships-pro' ) ],
 		attributes: {
 			levels: {
 				type: 'array',
