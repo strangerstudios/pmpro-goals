@@ -37,7 +37,7 @@ function pmpro_goals_register_block() {
 	// register script for Gutenberg
 	wp_register_script( 
 		'pmpro-goals-block', 
-		plugins_url( 'js/pmpro-goals-block.build.js', __FILE__ ), 
+		plugins_url( 'build/index.js', __FILE__ ), 
 		array( 'wp-blocks', 'wp-element', 'wp-editor' )
 	);
 
@@ -61,8 +61,6 @@ function pmpro_goals_block_editor_assets() {
 	wp_enqueue_style( 
 		'pmpro-goals-editor-css',
 		plugins_url( $editor_css_path, __FILE__ )
-		//array( 'wp-blocks', 'wp-element', 'wp-components' )
-		// filemtime( plugin_dir_path( __FILE__ ) . $editor_css_path ) 
 	);
 }
 add_action( 'enqueue_block_editor_assets', 'pmpro_goals_block_editor_assets' );

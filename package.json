@@ -1,19 +1,30 @@
 {
   "name": "pmpro-goals",
   "version": "1.0.0",
-  "license": "GPL-2.0-or-later",
-  "main": "js/pmpro-goals-block.js",
-  "devDependencies": {
-    "@wordpress/babel-preset-default": "^1.2.0",
-    "babel-core": "^6.26.3",
-    "babel-loader": "^7.1.4",
-    "babel-plugin-transform-react-jsx": "^6.24.1",
-    "babel-preset-env": "^1.7.0",
-    "cross-env": "^5.2.0",
-    "webpack": "^3.12.0"
-  },
+  "description": "Display a progress bar for membrship site signup and revenue goals.",
+  "main": "build/index.js",
   "scripts": {
-    "build": "cross-env BABEL_ENV=default NODE_ENV=production webpack",
-    "dev": "cross-env BABEL_ENV=default webpack --watch"
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/strangerstudios/pmpro-goals.git"
+  },
+  "keywords": [
+    "pmpro",
+    "paid-memberships-pro"
+  ],
+  "author": "Paid Memberships Pro",
+  "license": "GPL-2.0-only",
+  "bugs": {
+    "url": "https://github.com/strangerstudios/pmpro-goals/issues"
+  },
+  "homepage": "https://github.com/strangerstudios/pmpro-goals#readme",
+  "devDependencies": {
+    "@wordpress/scripts": "3.1.0"
+  },
+   "scripts": {
+    "start": "wp-scripts start",
+    "build": "wp-scripts build"
   }
 }
