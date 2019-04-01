@@ -191,11 +191,11 @@ function pmpro_goal_progress_bar_shortcode( $atts ) {
 			$sql = "SELECT COUNT(user_id) AS total FROM $wpdb->pmpro_memberships_users WHERE membership_id IN(" . $level_data . ") AND status = 'active'";
 
 			if ( ! empty( $start_date ) ) {
-				$sql .= " AND timestamp >= '" . esc_sql( $start_date ) . "'";
+				$sql .= " AND startdate >= '" . esc_sql( $start_date ) . "'";
 			}
 
 			if ( ! empty( $end_date ) ) {
-				$sql .= " AND timestamp <= '" . esc_sql( $end_date ) . "'";
+				$sql .= " AND startdate <= '" . esc_sql( $end_date ) . "'";
 			}
 
 			$total = $wpdb->get_var( $sql );
