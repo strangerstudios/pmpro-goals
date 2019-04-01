@@ -135,12 +135,11 @@ function pmpro_goal_progress_bar_shortcode( $atts ) {
 	$hashkey = substr( $to_hash, 0, 10);
 
 	if ( ! empty( $start_date ) ) {
-		$start_date = date( 'Y-m-d', strtotime( $start_date ) );
+		$start_date = date( 'Y-m-d', strtotime( $start_date ) ) . " 00:00:00";
 	}
 
 	if ( ! empty( $end_date ) ) {
-		$end_date = date( 'Y-m-d', strtotime( $end_date ) );
-
+		$end_date = date( 'Y-m-d', strtotime( $end_date ) ) . " 11:59:59";
 	}
 
 	if ( 'revenue' === $goal_type ) {
