@@ -81,7 +81,8 @@ function pmpro_goal_progress_bar_shortcode( $atts ) {
 		'goal_type' => NULL, 
 		'level' => NULL,
 		'levels' => NULL,
-		'start_date' => NULL
+		'start_date' => NULL,
+		'use_dates' => true
 	), $atts ) );
 	//if levels is used instead of level
 	if ( isset( $levels ) && ! isset( $level ) ) {
@@ -148,12 +149,14 @@ function pmpro_goal_progress_bar_shortcode( $atts ) {
 
 			$sql = "SELECT total FROM $wpdb->pmpro_membership_orders WHERE membership_id IN(" . $level_data . ") AND status = 'success'";
 
-			if ( ! empty( $start_date ) ) {
-				$sql .= " AND timestamp >= '" . esc_sql( $start_date ) . "'";
-			}
+			if ( $use_dates !== false ) {
+				if ( ! empty( $start_date ) ) {
+					$sql .= " AND timestamp >= '" . esc_sql( $start_date ) . "'";
+				}
 
-			if ( ! empty( $end_date ) ) {
-				$sql .= " AND timestamp <= '" . esc_sql( $end_date ) . "'";
+				if ( ! empty( $end_date ) ) {
+					$sql .= " AND timestamp <= '" . esc_sql( $end_date ) . "'";
+				}
 			}
 
 			$results = $wpdb->get_results( $sql );
@@ -189,12 +192,14 @@ function pmpro_goal_progress_bar_shortcode( $atts ) {
 		if ( false === get_transient( "pmpro_goals_" . $hashkey )  ) {
 			$sql = "SELECT COUNT(user_id) AS total FROM $wpdb->pmpro_memberships_users WHERE membership_id IN(" . $level_data . ") AND status = 'active'";
 
-			if ( ! empty( $start_date ) ) {
-				$sql .= " AND startdate >= '" . esc_sql( $start_date ) . "'";
-			}
+			if ( $use_dates !== false ) {
+				if ( ! empty( $start_date ) ) {
+					$sql .= " AND startdate >= '" . esc_sql( $start_date ) . "'";
+				}
 
-			if ( ! empty( $end_date ) ) {
-				$sql .= " AND startdate <= '" . esc_sql( $end_date ) . "'";
+				if ( ! empty( $end_date ) ) {
+					$sql .= " AND startdate <= '" . esc_sql( $end_date ) . "'";
+				}
 			}
 
 			$total = $wpdb->get_var( $sql );

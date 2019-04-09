@@ -12,7 +12,8 @@ const {
 	SelectControl,
 	TextControl,
 	ColorPalette,
-	DateTimePicker
+	DateTimePicker,
+	CheckboxControl
 } = wp.components;
 
 const {
@@ -44,7 +45,11 @@ export default registerBlockType(
 			foreground: '#FFFFFF',
 			src: 'chart-area'
 		},
-		keywords: [ __( 'pmpro', 'paid-memberships-pro' ) ],
+		keywords: [ 
+		__( 'pmpro', 'pmpro-goals' ),
+		__( 'goals', 'pmpro-goals' ),
+		__( 'membership tracking', 'pmpro-goals' )
+		 ],
 		attributes: {
 			levels: {
 				type: 'array',
@@ -85,13 +90,16 @@ export default registerBlockType(
 			goal: {
 				type: 'string',
 				default: 0
+			},
+			use_dates: {
+				type: 'boolean',
+				default: false
 			}
 		},
 
 		edit: props => {
 
-			const { attributes: { goal_type, levels, before, after, goal, revenue, font_color, background_color, fill_color, start_date, end_date }, className, setAttributes, isSelected } = props;
-
+			const { attributes: { goal_type, levels, before, after, goal, revenue, font_color, background_color, fill_color, start_date, end_date, use_dates }, className, setAttributes, isSelected } = props;
 			return[
 				/**	
 				 * Inline Settings for PMPro Goals.
@@ -108,7 +116,7 @@ export default registerBlockType(
 
                     <SelectControl
                     	multiple
-                    	label={ __( 'Levels to Track' ) }
+                    	label={ __( 'Levels to Track', 'pmpro-goals' ) }
                     	value={ levels }
                     	onChange={ levels => { setAttributes( { levels } ) } }
                     	options={ all_levels }
@@ -135,21 +143,30 @@ export default registerBlockType(
 						onChange={ after => { setAttributes( { after } ) } }
 					/>
 
-					{ __( 'Start Date', 'pmpro-goals' ) }
-					<br/><small>{ __( 'Set the start date to track statistics from this day onwards.' ) }</small>
-					<DateTimePicker
-						currentDate={ start_date }
-						onChange={ start_date => { setAttributes( { start_date } ) } }
-						is12Hour={ false }
+					{  __( 'Filter by Date', 'pmpro-goals' ) }
+					<CheckboxControl
+						label={ __( 'Select this if you want to filter results between two dates.', 'pmpro-goals' ) }
+						checked={ use_dates }
+						onChange={ use_dates => { setAttributes( { use_dates }  ) } }
 					/>
 
-					{ __( 'End Date', 'pmpro-goals' ) }
-					<br/><small>{ __( 'Set the end date to track statistics up until this day.' ) }</small>
-					<DateTimePicker
-						currentDate={ end_date }
-						onChange={ end_date => { setAttributes( { end_date } ) } }
-						is12Hour={ false }
-					/>
+					<div className={ !use_dates ? "hidden" : "" }>
+						{ __( 'Start Date', 'pmpro-goals' ) }
+						<br/><small>{ __( 'Set the start date to track statistics from this day onwards.', 'pmpro-goals' ) }</small>
+						<DateTimePicker
+							currentDate={ start_date }
+							onChange={ start_date => { setAttributes( { start_date } ) } }
+							is12Hour={ false }
+						/>
+
+						{ __( 'End Date', 'pmpro-goals' ) }
+						<br/><small>{ __( 'Set the end date to track statistics up until this day.' ) }</small>
+						<DateTimePicker
+							currentDate={ end_date }
+							onChange={ end_date => { setAttributes( { end_date } ) } }
+							is12Hour={ false }
+						/>
+					</div>
 
 					{ __( 'Font Color', 'pmpro-goals' ) }
 					<ColorPalette
