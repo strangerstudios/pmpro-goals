@@ -132,7 +132,7 @@ function pmpro_goal_progress_bar_shortcode( $atts ) {
 	$level_data = apply_filters( 'pmpro_goals_sql_level_data', $level_data );
 
 	// Check hash for transients.
-	$to_hash = md5( $goal . $after . $fill_color . $background_color . $font_color . $goal_type . $start_date . $end_date . $levels_for_hash );
+	$to_hash = md5( $goal . $after . $fill_color . $background_color . $font_color . $goal_type . $start_date . $end_date . $use_dates . $levels_for_hash );
 	$hashkey = substr( $to_hash, 0, 10);
 
 	if ( ! empty( $start_date ) ) {
