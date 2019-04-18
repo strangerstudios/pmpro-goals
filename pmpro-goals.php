@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name: Paid Memberships Pro - Goal Progress
+ * Plugin Name: Paid Memberships Pro - Goal Progress Bar Add On
  * Description: Display a progress bar for membership site signup and revenue goals.
  * Plugin URI: https://wwwpaidmembershipspro.com/add-ons/pmpro-goals/
  * Author: Paid Memberships Pro
@@ -12,12 +12,12 @@
  * Domain Path: /languages
  * Network: false
  *
- * Paid Memberships Pro Goal Progress is free software: you can redistribute it and/or modify
+ * Paid Memberships Pro - Goal Progress Bar Add On is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 2 of the License, or
  * any later version.
  *
- * Paid Memberships Pro Goal Progress is distributed in the hope that it will be useful,
+ * Paid Memberships Pro - Goal Progress Bar Add On is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
