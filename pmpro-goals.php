@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Paid Memberships Pro - Goal Progress Bar Add On
  * Description: Display a progress bar for membership site signup and revenue goals.
- * Plugin URI: https://wwwpaidmembershipspro.com/add-ons/pmpro-goals/
+ * Plugin URI: https://www.paidmembershipspro.com/add-ons/pmpro-goals/
  * Author: Paid Memberships Pro
  * Author URI: https://www.paidmembershipspro.com
  * Version: 1.0
