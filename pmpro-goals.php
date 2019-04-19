@@ -129,7 +129,7 @@ function pmpro_goal_progress_bar_shortcode( $atts ) {
 	if ( is_array( $levels ) ) {
 		$level_data = implode(",", $levels);
 	} else {
-		$level_data = $level;
+		$level_data = $levels;
 	}
 
 	$level_data = apply_filters( 'pmpro_goals_sql_level_data', $level_data );
@@ -206,7 +206,7 @@ function pmpro_goal_progress_bar_shortcode( $atts ) {
 				}
 			}
 
-			$total = $wpdb->get_var( $sql );
+			$total = intval( $wpdb->get_var( $sql ) );
 
 			set_transient( 'pmpro_goals_' . $hashkey, $total, 12 * HOUR_IN_SECONDS );	
 
@@ -237,7 +237,7 @@ function pmpro_goal_progress_bar_shortcode( $atts ) {
 			
 			$sql .= " GROUP BY user_id ";
 
-			$total = $wpdb->get_var( $sql );
+			$total = intval( $wpdb->get_var( $sql ) );
 
 			set_transient( 'pmpro_goals_' . $hashkey, $total, 12 * HOUR_IN_SECONDS );	
 
