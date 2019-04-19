@@ -33,8 +33,7 @@ defined( 'ABSPATH' ) or exit;
  * @since 1.0
  */
 function pmpro_goals_register_block() {
-
-	// register script for Gutenberg
+	// Register script for Gutenberg
 	wp_register_script( 
 		'pmpro-goals-block', 
 		plugins_url( 'build/index.js', __FILE__ ), 
@@ -67,8 +66,12 @@ add_action( 'enqueue_block_editor_assets', 'pmpro_goals_block_editor_assets' );
 
 // Show goals for PMPro levels funds raised. Quick example.
 function pmpro_goal_progress_bar_shortcode( $atts ) {
-
 	global $wpdb, $pmpro_currency_symbol;
+	
+	// Make sure PMPro is active
+	if ( ! function_exists( 'pmpro_getAllLevels' ) ) {
+		return "<span class='pmpro-warning'>" . __( 'Make sure the Paid Memberships Pro plugin is active.', 'pmpro-goals' ) . "</span>";
+	}
 
 	extract( shortcode_atts( array(
 		'after' => NULL,
@@ -84,13 +87,12 @@ function pmpro_goal_progress_bar_shortcode( $atts ) {
 		'start_date' => NULL,
 		'use_dates' => true
 	), $atts ) );
-	//if levels is used instead of level
-	if ( isset( $levels ) && ! isset( $level ) ) {
-		$level = $levels;
-	} else {
+	
+	// If levels is used instead of level
+	if ( isset( $level ) && ! isset( $levels ) ) {
 		$levels = $level;
 	}
-
+	
 	$goal = intval( $goal );
 	$after = esc_attr( $after );
 	$fill_color = sanitize_hex_color( $fill_color );
@@ -100,15 +102,16 @@ function pmpro_goal_progress_bar_shortcode( $atts ) {
 	$total = 0;
 	$goal_reached = false;
 
+	// Default to all levels if none passed.
 	if ( empty( $levels ) ) {
-		return "<span class='pmpro-warning'>" . __( 'Please insert a valid level(s)', 'pmpro-goals' ) . "</span>";
+		$levels = array_keys( pmpro_getAllLevels() );
 	}
 
 	if ( empty( $goal ) || $goal === 0 ) {
 		return "<span class='pmpro-warning'>" . __( 'Goal amount is invalid.', 'pmpro-goals' ) . "</span>";
 	}
 
-	if ( empty( $goal_type ) || 'members' !== $goal_type ) {
+	if ( empty( $goal_type ) || ! in_array( $goal_type, array( 'members', 'sales', 'revenue' ) ) ) {
 		$goal_type = 'revenue';
 	}
 
@@ -187,6 +190,36 @@ function pmpro_goal_progress_bar_shortcode( $atts ) {
 
 		$total = pmpro_formatPrice( $total ); //Format the pricing here for later.
 
+	} elseif ( 'sales' === $goal_type ) {
+
+		if ( false === get_transient( "pmpro_goals_" . $hashkey )  ) {
+
+			$sql = "SELECT COUNT(*) FROM $wpdb->pmpro_membership_orders WHERE membership_id IN(" . $level_data . ") AND status NOT IN( 'error', 'pending', 'refunded', 'review', 'token' )";
+
+			if ( $use_dates !== false ) {
+				if ( ! empty( $start_date ) ) {
+					$sql .= " AND timestamp >= '" . esc_sql( $start_date ) . "'";
+				}
+
+				if ( ! empty( $end_date ) ) {
+					$sql .= " AND timestamp <= '" . esc_sql( $end_date ) . "'";
+				}
+			}
+
+			$total = $wpdb->get_var( $sql );
+
+			set_transient( 'pmpro_goals_' . $hashkey, $total, 12 * HOUR_IN_SECONDS );	
+
+		} else {
+			$total = get_transient( 'pmpro_goals_' . $hashkey );
+		}
+
+		$after_total_amount_text =  ' <span class="pmpro_goals-separator">/</span> ';
+		$after_total_amount_text .=  '<span class="pmpro_goals-goal">' . $goal . '</span>';
+		$after_total_amount_text .=  ' <span class="pmpro_goals-after-text">' . ' ' . $after . '</span>';
+
+		$percentage = intval( ( $total / $goal ) * 100 );
+	
 	} else {
 
 		if ( false === get_transient( "pmpro_goals_" . $hashkey )  ) {
@@ -201,6 +234,8 @@ function pmpro_goal_progress_bar_shortcode( $atts ) {
 					$sql .= " AND startdate <= '" . esc_sql( $end_date ) . "'";
 				}
 			}
+			
+			$sql .= " GROUP BY user_id ";
 
 			$total = $wpdb->get_var( $sql );
 
