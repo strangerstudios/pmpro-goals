@@ -24,9 +24,11 @@ After installing and activating the plugin, you will be able to add a new Goal P
 This Add On supports a shortcode or block implementation. Sites using the WordPress v5.0+ Block Editor can insert the block via either method. All other sites can use the shortcode method described below. 
 
 Each Goal Progress Bar has unique settings and can be configured to fit your needs. You can set up more than one Goal Progress Bar on a single page or insert them on multiple pages of your site. Both implementations feature the same settings:
-1. Type of Goal: Choose whether your goal is tracking revenue or member count.
+1. Type of Goal: Choose whether your goal is tracking revenue, sales, or member count.
 1. Levels to Track: Choose the levels to include in your goal tracking.
-1. Goal Amount: The numeric revenue value (no currency symbol), or the number of signups to reach your goal.
+1. Goal Amount: The numeric revenue value (no currency symbol), or the number of sales or signups to reach your goal.
+1. Start Date: Only include sales and sign ups after this date.
+1. End Date: Only include sales and sign ups before this date.
 1. Text Before: Text to display before the Goal Progress value to date.
 1. Text After: Text to display after the total Goal Amount.
 1. Font Color: The color of the text overlaid on the Goal Progress Bar.
@@ -45,8 +47,10 @@ The shortcode attributes include:
 1. fill_color: Hexadecimal color value for the goal’s progress bar. Default: “#77A02E”.
 1. font_color: Hexadecimal color value for the text of the goal bar. Default: “#FFFFFF”.
 1. goal: The numeric goal you would like to reach. Do not include any currency symbol or special characters; Required. (i.e. “1000”)
-1. goal_type: The type of goal to track. Default: “revenue”; Accepts: “revenue” or “members”
-1. levels: A single or comma-separated list of level IDs to include in the goal tracking; Required. (i.e. “1,2”)
+1. goal_type: The type of goal to track. Default: "revenue"; Accepts: "revenue", "sales" or "members"
+1. start_date: Only include orders or sign ups after this date. Use yyyy-mm-dd format.
+1. end_date: Only include orders or sign ups before this date. Use yyyy-mm-dd format.
+1. levels: A single or comma-separated list of level IDs to include in the goal tracking. (i.e. “1,2”) Defaults to all levels if blank.
 
 == Frequently Asked Questions ==
 
