@@ -5,7 +5,7 @@
  * Plugin URI: https://www.paidmembershipspro.com/add-ons/pmpro-goals/
  * Author: Paid Memberships Pro
  * Author URI: https://www.paidmembershipspro.com
- * Version: 1.0
+ * Version: 1.1
  * License: GPL2 or later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain: pmpro-goals
@@ -37,7 +37,7 @@ function pmpro_goals_register_block() {
 	wp_register_script( 
 		'pmpro-goals-block', 
 		plugins_url( 'build/index.js', __FILE__ ), 
-		array( 'wp-blocks', 'wp-element', 'wp-editor' )
+		array( 'wp-blocks', 'wp-element', 'wp-editor', 'pmpro_admin' )
 	);
 
 	register_block_type( 'pmpro-goals/goal-progress', array(
@@ -224,7 +224,6 @@ function pmpro_goal_progress_bar_shortcode( $atts ) {
 
 		if ( false === get_transient( "pmpro_goals_" . $hashkey )  ) {
 			$sql = "SELECT COUNT(user_id) AS total FROM $wpdb->pmpro_memberships_users WHERE membership_id IN(" . $level_data . ") AND status = 'active'";
-
 			if ( $use_dates !== false ) {
 				if ( ! empty( $start_date ) ) {
 					$sql .= " AND startdate >= '" . esc_sql( $start_date ) . "'";
@@ -235,8 +234,6 @@ function pmpro_goal_progress_bar_shortcode( $atts ) {
 				}
 			}
 			
-			$sql .= " GROUP BY user_id ";
-
 			$total = intval( $wpdb->get_var( $sql ) );
 
 			set_transient( 'pmpro_goals_' . $hashkey, $total, 12 * HOUR_IN_SECONDS );	
@@ -314,7 +311,7 @@ function pmpro_goals_plugin_row_meta( $links, $file ) {
 			'<a href="' . esc_url( 'http://paidmembershipspro.com/support/' ) . '" title="' . esc_attr( __( 'Visit Customer Support Area', 'paid-memberships-pro' ) ) . '">' . __( 'Support', 'paid-memberships-pro' ) . '</a>',
 		);
 		$links = array_merge( $links, $new_links );
-	}
+	} 
 	return $links;
 }
 add_filter( 'plugin_row_meta', 'pmpro_goals_plugin_row_meta', 10, 2 );
