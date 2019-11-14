@@ -24,3 +24,5 @@ node_modules
 # Log files
 log/*.log
 log/*.txt
+build/index.asset.php
+build/index.js.map

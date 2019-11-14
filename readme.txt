@@ -1,9 +1,9 @@
 == Paid Memberships Pro - Goals Progress Bar Add On ==
 Contributors: strangerstudios, andrewlimaza
 Tags: pmpro, paid memberships pro, goals, progress
-Requires at least: 4.0
-Tested up to: 5.1.1
-Stable tag: 1.0
+Requires at least: 4.7
+Tested up to: 5.3
+Stable tag: 1.1
 
 Display a progress bar for membership site signup and revenue goals.
 
@@ -59,6 +59,13 @@ The shortcode attributes include:
 Please post it in the issues section of GitHub and we'll fix it as soon as we can. Thanks for helping. https://github.com/strangerstudios/pmpro-goals/issues
 
 == Changelog ==
+= 1.1 2019-11-14 =
+* SECURITY/ENHANCEMENT: Update NPM packages to latest version to resolve vulnerability issues.
+* BUG FIX: Incorrect SQL results from calculating progress for member count.
+* ENHANCEMENT: Added in additional parameters to filters: 
+  - apply_filters( 'pmpro_goals_after_text', $after_total_amount_text, $total, $goal, $percentage );
+  - do_action( 'pmpro_goals_before_bar', $total, $goal, $percentage );
+  - do_action( 'pmpro_goals_after_bar', $total, $goal, $percentage );
 
 = 1.0 =
 * This is the initial version of the plugin.
