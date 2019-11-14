@@ -224,6 +224,7 @@ function pmpro_goal_progress_bar_shortcode( $atts ) {
 
 		if ( false === get_transient( "pmpro_goals_" . $hashkey )  ) {
 			$sql = "SELECT COUNT(user_id) AS total FROM $wpdb->pmpro_memberships_users WHERE membership_id IN(" . $level_data . ") AND status = 'active'";
+
 			if ( $use_dates !== false ) {
 				if ( ! empty( $start_date ) ) {
 					$sql .= " AND startdate >= '" . esc_sql( $start_date ) . "'";
@@ -256,7 +257,7 @@ function pmpro_goal_progress_bar_shortcode( $atts ) {
 	 * @return string The text after the total amount.
 	 * @since 1.0
 	 */
-	$after_text = apply_filters( 'pmpro_goals_after_text', $after_total_amount_text );
+	$after_text = apply_filters( 'pmpro_goals_after_text', $after_total_amount_text, $total, $goal, $percentage );
 	
 
 	if ( $percentage > 100 ) {
@@ -265,7 +266,7 @@ function pmpro_goal_progress_bar_shortcode( $atts ) {
 
 	ob_start();
 	?>	
-		<?php do_action( 'pmpro_goals_before_bar' ); ?>
+		<?php do_action( 'pmpro_goals_before_bar', $total, $goal, $percentage ); ?>
 				<div class="pmpro_goals-bar" style="<?php echo 'background:' . $background_color; ?>;margin-top:1em;margin-bottom:1em;padding: 5px;border-radius:5px;">
 					<span class="pmpro_goals-bar-content" style="position:absolute;max-width:100%;<?php echo 'color:' . $font_color; ?>;font-weight: 700;padding: 10px;">
 							<span class="pmpro_goals-before-text"><?php echo $before; ?></span>
@@ -275,7 +276,7 @@ function pmpro_goal_progress_bar_shortcode( $atts ) {
 					<div class="pmpro_goals-progress" style="<?php echo 'background:' . $fill_color; ?>; <?php echo 'width:' . $percentage . '%'?>;height:50px;"></div>
 				</div>
 
-		<?php do_action( 'pmpro_goals_after_bar' ); ?>
+		<?php do_action( 'pmpro_goals_after_bar', $total, $goal, $percentage ); ?>
 <?php
 
 	$shortcode_content = ob_get_clean();
