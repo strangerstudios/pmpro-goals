@@ -5,7 +5,7 @@
  * Plugin URI: https://www.paidmembershipspro.com/add-ons/pmpro-goals/
  * Author: Paid Memberships Pro
  * Author URI: https://www.paidmembershipspro.com
- * Version: 1.0
+ * Version: 1.1
  * License: GPL2 or later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain: pmpro-goals
@@ -37,7 +37,7 @@ function pmpro_goals_register_block() {
 	wp_register_script( 
 		'pmpro-goals-block', 
 		plugins_url( 'build/index.js', __FILE__ ), 
-		array( 'wp-blocks', 'wp-element', 'wp-editor' )
+		array( 'wp-blocks', 'wp-element', 'wp-editor', 'pmpro_admin' )
 	);
 
 	register_block_type( 'pmpro-goals/goal-progress', array(
@@ -235,8 +235,6 @@ function pmpro_goal_progress_bar_shortcode( $atts ) {
 				}
 			}
 			
-			$sql .= " GROUP BY user_id ";
-
 			$total = intval( $wpdb->get_var( $sql ) );
 
 			set_transient( 'pmpro_goals_' . $hashkey, $total, 12 * HOUR_IN_SECONDS );	
@@ -259,7 +257,7 @@ function pmpro_goal_progress_bar_shortcode( $atts ) {
 	 * @return string The text after the total amount.
 	 * @since 1.0
 	 */
-	$after_text = apply_filters( 'pmpro_goals_after_text', $after_total_amount_text );
+	$after_text = apply_filters( 'pmpro_goals_after_text', $after_total_amount_text, $total, $goal, $percentage );
 	
 
 	if ( $percentage > 100 ) {
@@ -268,7 +266,7 @@ function pmpro_goal_progress_bar_shortcode( $atts ) {
 
 	ob_start();
 	?>	
-		<?php do_action( 'pmpro_goals_before_bar' ); ?>
+		<?php do_action( 'pmpro_goals_before_bar', $total, $goal, $percentage ); ?>
 				<div class="pmpro_goals-bar" style="<?php echo 'background:' . $background_color; ?>;margin-top:1em;margin-bottom:1em;padding: 5px;border-radius:5px;">
 					<span class="pmpro_goals-bar-content" style="position:absolute;max-width:100%;<?php echo 'color:' . $font_color; ?>;font-weight: 700;padding: 10px;">
 							<span class="pmpro_goals-before-text"><?php echo $before; ?></span>
@@ -278,7 +276,7 @@ function pmpro_goal_progress_bar_shortcode( $atts ) {
 					<div class="pmpro_goals-progress" style="<?php echo 'background:' . $fill_color; ?>; <?php echo 'width:' . $percentage . '%'?>;height:50px;"></div>
 				</div>
 
-		<?php do_action( 'pmpro_goals_after_bar' ); ?>
+		<?php do_action( 'pmpro_goals_after_bar', $total, $goal, $percentage ); ?>
 <?php
 
 	$shortcode_content = ob_get_clean();
@@ -314,7 +312,7 @@ function pmpro_goals_plugin_row_meta( $links, $file ) {
 			'<a href="' . esc_url( 'http://paidmembershipspro.com/support/' ) . '" title="' . esc_attr( __( 'Visit Customer Support Area', 'paid-memberships-pro' ) ) . '">' . __( 'Support', 'paid-memberships-pro' ) . '</a>',
 		);
 		$links = array_merge( $links, $new_links );
-	}
+	} 
 	return $links;
 }
 add_filter( 'plugin_row_meta', 'pmpro_goals_plugin_row_meta', 10, 2 );

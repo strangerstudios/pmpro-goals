@@ -4,7 +4,8 @@
   "description": "Display a progress bar for membrship site signup and revenue goals.",
   "main": "build/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "wp-scripts start",
+    "build": "wp-scripts build"
   },
   "repository": {
     "type": "git",
@@ -21,10 +22,6 @@
   },
   "homepage": "https://github.com/strangerstudios/pmpro-goals#readme",
   "devDependencies": {
-    "@wordpress/scripts": "3.1.0"
-  },
-   "scripts": {
-    "start": "wp-scripts start",
-    "build": "wp-scripts build"
+    "@wordpress/scripts": "^5.1.0"
   }
 }
