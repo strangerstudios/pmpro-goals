@@ -22,6 +22,6 @@
   },
   "homepage": "https://github.com/strangerstudios/pmpro-goals#readme",
   "devDependencies": {
-    "@wordpress/scripts": "^5.1.0"
+    "@wordpress/scripts": "^23.7.2"
   }
 }

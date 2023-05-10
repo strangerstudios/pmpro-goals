@@ -25,7 +25,8 @@ const all_levels = pmpro.all_level_values_and_labels;
 
 const goal_types = [
 	{ value: 'revenue', label: __( 'Revenue', 'pmpro-goals' ) },
-	{ value: 'members', label: __( 'Members', 'pmpro-goals' ) }
+	{ value: 'members', label: __( 'Members', 'pmpro-goals' ) },
+	{ value: 'sales', label: __( 'Sales', 'pmpro-goals' ) }
 ];
 
 const default_colors = [
@@ -100,6 +101,7 @@ export default registerBlockType(
 		edit: props => {
 
 			const { attributes: { goal_type, levels, before, after, goal, revenue, font_color, background_color, fill_color, start_date, end_date, use_dates }, className, setAttributes, isSelected } = props;
+			
 			return[
 				/**	
 				 * Inline Settings for PMPro Goals.
