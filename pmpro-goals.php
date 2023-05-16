@@ -55,7 +55,7 @@ add_action( 'init', 'pmpro_goals_register_block' );
 
 function pmpro_goals_block_editor_assets() {
 
-	$editor_css_path = '/css/pmpro-goals-editor.css';
+	$editor_css_path = '/css/pmpro-goals.css';
 
 	wp_enqueue_style( 
 		'pmpro-goals-editor-css',
@@ -98,7 +98,7 @@ function pmpro_goal_progress_bar_shortcode( $atts ) {
 
 	// Generate level data for SQL query.
 	if ( is_array( $levels ) ) {
-		$level_data = implode(",", $levels);
+		$level_data = implode(",", wp_list_pluck($levels, 'label'));
 	} else {
 		$level_data = $levels;
 	}

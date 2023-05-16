@@ -1,25 +1,22 @@
-const { __, setLocaleData } = wp.i18n;
+import React from 'react';
+import Select from 'react-select';
+
+const { __ } = wp.i18n;
 
 const{
 	registerBlockType,
-	BlockControls
 } = wp.blocks;
 
 const {
-	Panel,
 	PanelBody,
 	PanelRow,
 	SelectControl,
 	TextControl,
 	ColorPalette,
 	DateTimePicker,
-	CheckboxControl
+	ToggleControl
 } = wp.components;
 
-const {
-	RichText,
-	InspectorControls
-} = wp.editor;
 
 const all_levels = pmpro.all_level_values_and_labels;
 
@@ -115,14 +112,21 @@ export default registerBlockType(
 						value={goal_type}
 						onChange={ goal_type => { setAttributes( { goal_type } ) } }
 					/>
-
-                    <SelectControl
-                    	multiple
-                    	label={ __( 'Levels to Track', 'pmpro-goals' ) }
-                    	value={ levels }
-                    	onChange={ levels => { setAttributes( { levels } ) } }
-                    	options={ all_levels }
-                  	/>
+					<PanelRow className="select2-multi-row">
+						<label for="levels" class="components-truncate components-text components-input-control__label em5sgkm4 css-1imalal e19lxcc00">
+						{ __( 'Levels to Track', 'pmpro-goals' ) }
+						</label>
+						<Select
+						  	classNamePrefix='filter'
+							value={ levels }
+							onChange={ levels => { setAttributes( { levels } ) } }
+							options={ all_levels }
+							isMulti='true'
+							name='levels'
+							id='levels'
+							className='components-text-control__input'
+						/>
+					</PanelRow>
 
                     <TextControl
 						id="pmpro-goals-goal"
@@ -144,53 +148,60 @@ export default registerBlockType(
 						value={ after }
 						onChange={ after => { setAttributes( { after } ) } }
 					/>
-
-					{  __( 'Filter by Date', 'pmpro-goals' ) }
-					<CheckboxControl
-						label={ __( 'Select this if you want to filter results between two dates.', 'pmpro-goals' ) }
-						checked={ use_dates }
-						onChange={ use_dates => { setAttributes( { use_dates }  ) } }
-					/>
-
-					<div className={ !use_dates ? "hidden" : "" }>
-						{ __( 'Start Date', 'pmpro-goals' ) }
-						<br/><small>{ __( 'Set the start date to track statistics from this day onwards.', 'pmpro-goals' ) }</small>
-						<DateTimePicker
-							currentDate={ start_date }
-							onChange={ start_date => { setAttributes( { start_date } ) } }
-							is12Hour={ false }
-						/>
-
-						{ __( 'End Date', 'pmpro-goals' ) }
-						<br/><small>{ __( 'Set the end date to track statistics up until this day.' ) }</small>
-						<DateTimePicker
-							currentDate={ end_date }
-							onChange={ end_date => { setAttributes( { end_date } ) } }
-							is12Hour={ false }
+					<div className='datepicker-checkbox'>
+						<label for="pmpro-goals-use-dates" className='components-base-control__label css-1v57ksj'>{  __( 'Filter by Date', 'pmpro-goals' ) }</label>
+						<ToggleControl
+							id="pmpro-goals-use-dates"
+							label={ __( 'Select this if you want to filter results between two dates.', 'pmpro-goals' ) }
+							checked={ use_dates }
+							onChange={ use_dates => { setAttributes( { use_dates }  ) } }
 						/>
 					</div>
 
-					{ __( 'Font Color', 'pmpro-goals' ) }
+					<div className={ !use_dates ? "hidden datepicker-component-wrapper" : "datepicker-component-wrapper" }>	
+						<div className={  "datepicker-component-startdate" }>	
+							<label className='components-base-control__label css-1v57ksj' for="pmpro-goals-start-date">{ __( 'Start Date', 'pmpro-goals' ) }</label>
+							<DateTimePicker
+								currentDate={ start_date }
+								onChange={ start_date => { setAttributes( { start_date } ) } }
+								is12Hour={ false }
+								id="pmpro-goals-start-date"
+							/>
+						</div>
+						<div className={  "datepicker-component-enddate" }>	
+							<label className='components-base-control__label css-1v57ksj' for="pmpro-goals-end-date">{ __( 'End Date', 'pmpro-goals' ) }</label>
+							<DateTimePicker
+								currentDate={ end_date }
+								onChange={ end_date => { setAttributes( { end_date } ) } }
+								is12Hour={ false }
+							/>
+						</div>
+					</div>
+					<label className='components-base-control__label css-1v57ksj' for="pmpro-goals-font-color">{ __( 'Font Color', 'pmpro-goals' ) }</label>
+
 					<ColorPalette
 						colors={ default_colors }
 						value={ font_color }
 						onChange={ font_color => { setAttributes( { font_color } ) } }
+						id="pmpro-goals-font-color"
 					/>
 
-					{ __( 'Fill Color', 'pmpro-goals' ) }
+					<label className='components-base-control__label css-1v57ksj' for="pmpro-goals-fill-color">{ __( 'Fill Color', 'pmpro-goals' ) }</label>
+
 					<ColorPalette
 						colors={ default_colors }
 						value={ fill_color }
 						onChange={ fill_color => { setAttributes( { fill_color } ) } }
+						id="pmpro-goals-fill-color"
 					/>
 
-					{ __( 'Background Color', 'pmpro-goals' ) }
+					<label className='components-base-control__label css-1v57ksj' for="pmpro-goals-background-color">{ __( 'Background Color', 'pmpro-goals' ) }</label>
 					<ColorPalette 
 						colors={ default_colors }
 						value={ background_color }
 						onChange={ background_color => { setAttributes( { background_color } ) } }
+						id="pmpro-goals-background-color"
 					/>
-
                 </PanelBody>
                 </div>,
 
