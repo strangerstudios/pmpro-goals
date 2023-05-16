@@ -26,8 +26,10 @@ log/*.log
 log/*.txt
 
 #Build folder
-build/index.js
-build/index.js.map
-build/index.asset.php
+**/build
 #NPM
 package-lock.json
+
+#Sass map file
+css/pmpro-goals.css.map
+

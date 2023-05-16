@@ -1,0 +1,102 @@
+
+$primary-blue: #007cba;
+$primary-blue-hover: #006ba1;
+$bp-xs: 768px;
+
+
+@mixin button {
+  border: 1px solid $primary-blue;
+  border-radius: 2px;
+  text-decoration: unset;
+  &:hover {
+    background-color: $primary-blue-hover;
+    color: white;
+  }
+}
+
+.select2-multi-row {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 5px;
+  margin-bottom: 8px;
+  .filter {
+    &__control {
+      min-height: 28px;
+      border-radius: 2px;
+    }
+    &__indicator {
+      padding: 0px 8px;
+    }
+    &__multi-value {
+      border-radius: 1px;
+    }
+    &__input {
+      min-height: 8px;
+    }
+  }
+}
+
+.wp-block-pmpro-goals-goal-progress {
+  .datepicker-component-wrapper {
+    display: flex;
+    gap: 100px;
+    margin-bottom: 8px;
+    flex-wrap: wrap;
+    @media (max-width: $bp-xs) {
+      gap:20px;
+    }
+    &.hidden {
+      display: none;
+    }
+    .datepicker-component-startdate,
+    .datepicker-component-enddate {
+      display: flex;
+      flex-direction: column;
+      width: 350px;
+      .components-datetime__date {
+        min-height: 285px;
+        .css-1syzhqb:nth-of-type(1),
+        .css-1syzhqb:nth-of-type(7) {
+          justify-self: center;
+        }
+        h3 {
+          margin: 0;
+        }
+      }
+      .components-datetime__buttons {
+        max-width: 350px;
+        button {
+          @include button;
+        }
+      }
+    }
+  }
+
+  #pmpro-goals-font-color,
+  #pmpro-goals-fill-color,
+  #pmpro-goals-background-color {
+    .components-dropdown {
+      button {
+        align-items: center;
+      }
+    }
+    .components-circular-option-picker {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      .components-circular-option-picker__option-wrapper {
+        button {
+          border-radius: 50%;
+        }
+      }
+      .components-circular-option-picker__custom-clear-wrapper {
+        display: flex;
+        margin: 0px;
+        button {
+          @include button;
+          height: 28px;
+        }
+      }
+    }
+  }
+}
