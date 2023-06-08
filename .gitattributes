@@ -11,4 +11,5 @@ webpack.config.js export-ignore
 src export-ignore
 scss export-ignore
 README.MD export-ignore
+pmpro-goals-banner.jpg export-ignore
 .github export-ignore
