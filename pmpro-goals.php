@@ -70,7 +70,7 @@ function pmpro_goal_progress_bar_shortcode( $atts ) {
 	
 	// Make sure PMPro is active
 	if ( ! function_exists( 'pmpro_getAllLevels' ) ) {
-		return "<span class='pmpro-warning'>" . __( 'Make sure the Paid Memberships Pro plugin is active.', 'pmpro-goals' ) . "</span>";
+		return "<span class='pmpro-warning'>" . esc_html__( 'Make sure the Paid Memberships Pro plugin is active.', 'pmpro-goals' ) . "</span>";
 	}
 
 		extract( shortcode_atts( array(
@@ -121,29 +121,29 @@ function pmpro_goal_progress_bar_shortcode( $atts ) {
 		$goal_type = 'revenue';
 	}
 
-	// Check hash for transients.
+	// Store data in a transient to save resources.
 	// `pmpro_goals_[level id]_[goal amount]_[goal type]_[start date]_[end date]`
-	$to_hash = str_replace(',', '-', $level_data) . '_' . $goal . '_' . $goal_type;
+	$cache_string = str_replace(',', '-', $level_data) . '_' . $goal . '_' . $goal_type;
 
 	if ( ! empty( $start_date ) && $use_dates ) {
 		$short_start_date = date( 'Y-m-d', strtotime( $start_date ) );
 		$start_date = date( 'Y-m-d h:m', strtotime($start_date ) );
-		$to_hash .= '_' . $short_start_date;
+		$cache_string .= '_' . $short_start_date;
 	} else {
-		$to_hash .= '_' . 'null';
+		$cache_string .= '_' . 'null';
 	}
 
 	if ( ! empty( $end_date ) && $use_dates ) {
 		$short_end_date = date( 'Y-m-d', strtotime( $end_date ) );
 		$end_date =  date( 'Y-m-d h:m', strtotime($end_date ) );
-		$to_hash .= '_' . $short_end_date;
+		$cache_string .= '_' . $short_end_date;
 	} else {
-		$to_hash .= '_' . 'null';
+		$cache_string .= '_' . 'null';
 	}
 
-	$hashkey = substr( $to_hash, 0, 172);
+	$cache_key = substr( $cache_string, 0, 172);
 
-	$total = get_transient('pmpro_goals_' . $hashkey);
+	$total = get_transient('pmpro_goals_' . $cache_key);
 
 	$should_set_new_transient = $total == false || intval($total) == 0;
 
@@ -151,7 +151,7 @@ function pmpro_goal_progress_bar_shortcode( $atts ) {
 		$sql = '';
 		switch ($goal_type) {
 			case 'revenue':
-				$sql = "SELECT SUM(total) FROM $wpdb->pmpro_membership_orders WHERE membership_id IN(" . $level_data . ") AND status = 'success'";
+				$sql = "SELECT SUM(total) FROM $wpdb->pmpro_membership_orders WHERE membership_id IN(" . $level_data . ") AND status NOT IN('error', 'pending', 'refunded', 'review', 'token')";
 				break;
 			case 'sales':
 				$sql = "SELECT COUNT(*) FROM $wpdb->pmpro_membership_orders WHERE membership_id IN(" . $level_data . ") AND status NOT IN('error', 'pending', 'refunded', 'review', 'token')";
@@ -177,7 +177,7 @@ function pmpro_goal_progress_bar_shortcode( $atts ) {
 
 		$total = intval($wpdb->get_var($sql));
 
-		set_transient('pmpro_goals_' . $hashkey, $total, 12 * HOUR_IN_SECONDS);
+		set_transient('pmpro_goals_' . $cache_key, $total, 12 * HOUR_IN_SECONDS);
 	}
 
 	$formatted_goal = $goal_type == 'revenue' ? pmpro_formatPrice( $goal ) : $goal;
@@ -194,7 +194,7 @@ function pmpro_goal_progress_bar_shortcode( $atts ) {
 	 */
 	$after_text = apply_filters( 'pmpro_goals_after_text', $after_total_amount_text, $total, $goal, $percentage );
 	
-
+	// If we get to over 100%, just keep it at 100%;
 	if ( $percentage > 100 ) {
 		$percentage = 100;
 	}
@@ -202,13 +202,13 @@ function pmpro_goal_progress_bar_shortcode( $atts ) {
 	ob_start();
 	?>	
 		<?php do_action( 'pmpro_goals_before_bar', $total, $goal, $percentage ); ?>
-				<div class="pmpro_goals-bar" style="<?php echo 'background:' . $background_color; ?>;margin-top:1em;margin-bottom:1em;padding: 5px;border-radius:5px;">
-					<span class="pmpro_goals-bar-content" style="position:absolute;max-width:100%;<?php echo 'color:' . $font_color; ?>;font-weight: 700;padding: 10px;">
-							<span class="pmpro_goals-before-text"><?php echo $before; ?></span>
-							<span class="pmpro_goals-total"><?php echo $total; ?></span>
-							<?php echo $after_text; ?>
+				<div class="pmpro_goals-bar" style="<?php echo 'background:' . esc_attr( $background_color ); ?>;margin-top:1em;margin-bottom:1em;padding: 5px;border-radius:5px;">
+					<span class="pmpro_goals-bar-content" style="position:absolute;max-width:100%;<?php echo 'color:' . esc_attr( $font_color ); ?>;font-weight: 700;padding: 10px;">
+							<span class="pmpro_goals-before-text"><?php echo esc_html( $before ); ?></span>
+							<span class="pmpro_goals-total"><?php if ( $goal_type == 'revenue' ) { echo pmpro_formatPrice( $total ); } else { echo $total; } ?></span>
+							<?php echo esc_html( $after_text ); ?>
 					</span>
-					<div class="pmpro_goals-progress" style="<?php echo 'background:' . $fill_color; ?>; <?php echo 'width:' . $percentage . '%'?>;height:50px;"></div>
+					<div class="pmpro_goals-progress" style="<?php echo 'background:' . esc_attr( $fill_color ); ?>; <?php echo 'width:' . esc_attr( $percentage ) . '%'?>;height:50px;"></div>
 				</div>
 
 		<?php do_action( 'pmpro_goals_after_bar', $total, $goal, $percentage ); ?>
