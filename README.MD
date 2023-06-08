@@ -1,4 +1,4 @@
-![](pmpro-goals-banner.png)
+![](pmpro-goals-banner.jpg)
 
 # [Paid Memberships Pro - Goals Progress Bar](https://www.paidmembershipspro.com/add-ons/pmpro-goals/) #
 
