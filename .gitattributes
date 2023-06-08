@@ -4,6 +4,12 @@
 .editorconfig export-ignore
 .gitattributes export-ignore
 .gitignore export-ignore
+.github export-ignore
 package-lock.json export-ignore
 package.json export-ignore
 webpack.config.js export-ignore
+src export-ignore
+scss export-ignore
+README.MD export-ignore
+pmpro-goals-banner.jpg export-ignore
+.github export-ignore

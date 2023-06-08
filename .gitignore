@@ -24,5 +24,13 @@ node_modules
 # Log files
 log/*.log
 log/*.txt
+
+#ignore the build asset file as we don't use it right now.
 build/index.asset.php
-build/index.js.map
+
+#NPM
+package-lock.json
+
+#Sass map file
+css/pmpro-goals.css.map
+

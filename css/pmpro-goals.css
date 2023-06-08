@@ -1,0 +1,108 @@
+.select2-multi-row {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 5px;
+  margin-bottom: 8px;
+}
+.select2-multi-row .filter__control {
+  min-height: 28px;
+  border-radius: 2px;
+}
+.select2-multi-row .filter__indicator {
+  padding: 0px 8px;
+}
+.select2-multi-row .filter__multi-value {
+  border-radius: 1px;
+}
+.select2-multi-row .filter__input {
+  min-height: 8px;
+}
+
+.wp-block-pmpro-goals-goal-progress .datepicker-component-wrapper {
+  display: flex;
+  gap: 100px;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+}
+@media (max-width: 768px) {
+  .wp-block-pmpro-goals-goal-progress .datepicker-component-wrapper {
+    gap: 20px;
+  }
+}
+.wp-block-pmpro-goals-goal-progress .datepicker-component-wrapper.hidden {
+  display: none;
+}
+.wp-block-pmpro-goals-goal-progress .datepicker-component-wrapper .datepicker-component-startdate,
+.wp-block-pmpro-goals-goal-progress .datepicker-component-wrapper .datepicker-component-enddate {
+  display: flex;
+  flex-direction: column;
+  width: 350px;
+}
+.wp-block-pmpro-goals-goal-progress .datepicker-component-wrapper .datepicker-component-startdate .components-datetime__date,
+.wp-block-pmpro-goals-goal-progress .datepicker-component-wrapper .datepicker-component-enddate .components-datetime__date {
+  min-height: 285px;
+}
+.wp-block-pmpro-goals-goal-progress .datepicker-component-wrapper .datepicker-component-startdate .components-datetime__date .css-1syzhqb:nth-of-type(1),
+.wp-block-pmpro-goals-goal-progress .datepicker-component-wrapper .datepicker-component-startdate .components-datetime__date .css-1syzhqb:nth-of-type(7),
+.wp-block-pmpro-goals-goal-progress .datepicker-component-wrapper .datepicker-component-enddate .components-datetime__date .css-1syzhqb:nth-of-type(1),
+.wp-block-pmpro-goals-goal-progress .datepicker-component-wrapper .datepicker-component-enddate .components-datetime__date .css-1syzhqb:nth-of-type(7) {
+  justify-self: center;
+}
+.wp-block-pmpro-goals-goal-progress .datepicker-component-wrapper .datepicker-component-startdate .components-datetime__date h3,
+.wp-block-pmpro-goals-goal-progress .datepicker-component-wrapper .datepicker-component-enddate .components-datetime__date h3 {
+  margin: 0;
+}
+.wp-block-pmpro-goals-goal-progress .datepicker-component-wrapper .datepicker-component-startdate .components-datetime__buttons,
+.wp-block-pmpro-goals-goal-progress .datepicker-component-wrapper .datepicker-component-enddate .components-datetime__buttons {
+  max-width: 350px;
+}
+.wp-block-pmpro-goals-goal-progress .datepicker-component-wrapper .datepicker-component-startdate .components-datetime__buttons button,
+.wp-block-pmpro-goals-goal-progress .datepicker-component-wrapper .datepicker-component-enddate .components-datetime__buttons button {
+  border: 1px solid #007cba;
+  border-radius: 2px;
+  text-decoration: unset;
+}
+.wp-block-pmpro-goals-goal-progress .datepicker-component-wrapper .datepicker-component-startdate .components-datetime__buttons button:hover,
+.wp-block-pmpro-goals-goal-progress .datepicker-component-wrapper .datepicker-component-enddate .components-datetime__buttons button:hover {
+  background-color: #006ba1;
+  color: white;
+}
+.wp-block-pmpro-goals-goal-progress #pmpro-goals-font-color .components-dropdown button,
+.wp-block-pmpro-goals-goal-progress #pmpro-goals-fill-color .components-dropdown button,
+.wp-block-pmpro-goals-goal-progress #pmpro-goals-background-color .components-dropdown button {
+  align-items: center;
+}
+.wp-block-pmpro-goals-goal-progress #pmpro-goals-font-color .components-circular-option-picker,
+.wp-block-pmpro-goals-goal-progress #pmpro-goals-fill-color .components-circular-option-picker,
+.wp-block-pmpro-goals-goal-progress #pmpro-goals-background-color .components-circular-option-picker {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+.wp-block-pmpro-goals-goal-progress #pmpro-goals-font-color .components-circular-option-picker .components-circular-option-picker__option-wrapper button,
+.wp-block-pmpro-goals-goal-progress #pmpro-goals-fill-color .components-circular-option-picker .components-circular-option-picker__option-wrapper button,
+.wp-block-pmpro-goals-goal-progress #pmpro-goals-background-color .components-circular-option-picker .components-circular-option-picker__option-wrapper button {
+  border-radius: 50%;
+}
+.wp-block-pmpro-goals-goal-progress #pmpro-goals-font-color .components-circular-option-picker .components-circular-option-picker__custom-clear-wrapper,
+.wp-block-pmpro-goals-goal-progress #pmpro-goals-fill-color .components-circular-option-picker .components-circular-option-picker__custom-clear-wrapper,
+.wp-block-pmpro-goals-goal-progress #pmpro-goals-background-color .components-circular-option-picker .components-circular-option-picker__custom-clear-wrapper {
+  display: flex;
+  margin: 0px;
+}
+.wp-block-pmpro-goals-goal-progress #pmpro-goals-font-color .components-circular-option-picker .components-circular-option-picker__custom-clear-wrapper button,
+.wp-block-pmpro-goals-goal-progress #pmpro-goals-fill-color .components-circular-option-picker .components-circular-option-picker__custom-clear-wrapper button,
+.wp-block-pmpro-goals-goal-progress #pmpro-goals-background-color .components-circular-option-picker .components-circular-option-picker__custom-clear-wrapper button {
+  border: 1px solid #007cba;
+  border-radius: 2px;
+  text-decoration: unset;
+  height: 28px;
+}
+.wp-block-pmpro-goals-goal-progress #pmpro-goals-font-color .components-circular-option-picker .components-circular-option-picker__custom-clear-wrapper button:hover,
+.wp-block-pmpro-goals-goal-progress #pmpro-goals-fill-color .components-circular-option-picker .components-circular-option-picker__custom-clear-wrapper button:hover,
+.wp-block-pmpro-goals-goal-progress #pmpro-goals-background-color .components-circular-option-picker .components-circular-option-picker__custom-clear-wrapper button:hover {
+  background-color: #006ba1;
+  color: white;
+}
+
+/*# sourceMappingURL=pmpro-goals.css.map */

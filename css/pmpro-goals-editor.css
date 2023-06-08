@@ -1,9 +1,0 @@
-.wp-block-pmpro-goals-goal-progress .components-datetime__date,
-.wp-block-pmpro-goals-goal-progress .components-datetime__date-help-button,
-.wp-block-pmpro-goals-goal-progress .components-datetime__time-field-time {
-    display:none;
-}
-
-.wp-block-pmpro-goals-goal-progress .components-datetime__time {
-	margin: 2px;
-}
