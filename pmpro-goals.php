@@ -182,8 +182,8 @@ function pmpro_goal_progress_bar_shortcode( $atts ) {
 
 	$formatted_goal = $goal_type == 'revenue' ? pmpro_formatPrice( $goal ) : $goal;
 	$after_total_amount_text = ' <span class="pmpro_goals-separator">/</span> ';
-	$after_total_amount_text .= '<span class="pmpro_goals-goal">' . $formatted_goal . '</span>';
-	$after_total_amount_text .= ' <span class="pmpro_goals-after-text">' . ' ' . $after . '</span>';
+	$after_total_amount_text .= '<span class="pmpro_goals-goal">' . esc_html( $formatted_goal ) . '</span>';
+	$after_total_amount_text .= ' <span class="pmpro_goals-after-text">' . ' ' . esc_html( $after ) . '</span>';
 
 	$percentage = intval(($total / $goal) * 100);
 
@@ -206,7 +206,10 @@ function pmpro_goal_progress_bar_shortcode( $atts ) {
 					<span class="pmpro_goals-bar-content" style="position:absolute;max-width:100%;<?php echo 'color:' . esc_attr( $font_color ); ?>;font-weight: 700;padding: 10px;">
 							<span class="pmpro_goals-before-text"><?php echo esc_html( $before ); ?></span>
 							<span class="pmpro_goals-total"><?php if ( $goal_type == 'revenue' ) { echo pmpro_formatPrice( $total ); } else { echo $total; } ?></span>
-							<?php echo esc_html( $after_text ); ?>
+							<?php 
+							//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped - Escaped above.
+							echo $after_text; 
+							?>
 					</span>
 					<div class="pmpro_goals-progress" style="<?php echo 'background:' . esc_attr( $fill_color ); ?>; <?php echo 'width:' . esc_attr( $percentage ) . '%'?>;height:50px;"></div>
 				</div>
