@@ -25,8 +25,9 @@ node_modules
 log/*.log
 log/*.txt
 
-#Build folder
-**/build
+#ignore the build asset file as we don't use it right now.
+build/index.asset.php
+
 #NPM
 package-lock.json
 
