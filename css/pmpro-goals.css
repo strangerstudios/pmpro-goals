@@ -48,8 +48,8 @@
 .wp-block-pmpro-goals-goal-progress .datepicker-component-wrapper .datepicker-component-enddate .components-datetime__date .css-1syzhqb:nth-of-type(7) {
   justify-self: center;
 }
-.wp-block-pmpro-goals-goal-progress .datepicker-component-wrapper .datepicker-component-startdate .components-datetime__date h3,
-.wp-block-pmpro-goals-goal-progress .datepicker-component-wrapper .datepicker-component-enddate .components-datetime__date h3 {
+.wp-block-pmpro-goals-goal-progress .datepicker-component-wrapper .datepicker-component-startdate .components-datetime__date h2,
+.wp-block-pmpro-goals-goal-progress .datepicker-component-wrapper .datepicker-component-enddate .components-datetime__date h2 {
   margin: 0;
 }
 .wp-block-pmpro-goals-goal-progress .datepicker-component-wrapper .datepicker-component-startdate .components-datetime__buttons,
