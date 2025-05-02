@@ -1,6 +1,7 @@
-# Contribute to Paid Memberships Pro
+# Contribute to Paid Memberships Pro - Goals Progress Bar
 
-Paid Memberships Pro is the "community solution" for membership sites on WordPress, and so contributions of all kinds are appreciated.
+Display a progress bar for membership site signup, sales, or revenue goals.
+For your Paid Memberships Pro site!
 
 When contributing, please follow these guidelines to ensure things work as smoothly as possible.
 
