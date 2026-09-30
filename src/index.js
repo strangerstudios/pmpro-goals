@@ -117,7 +117,7 @@ export default registerBlockType(
 							onChange={goal_type => { setAttributes({ goal_type }) }}
 						/>
 						<PanelRow className="select2-multi-row">
-							<label for="levels" class="components-truncate components-text components-input-control__label em5sgkm4 css-1imalal e19lxcc00">
+							<label for="pmpro-goals-inline-levels" class="components-truncate components-text components-input-control__label em5sgkm4 css-1imalal e19lxcc00">
 								{__('Levels to Track', 'pmpro-goals')}
 							</label>
 							<Select
@@ -127,13 +127,13 @@ export default registerBlockType(
 								options={all_levels}
 								isMulti='true'
 								name='levels'
-								id='levels'
+								id='pmpro-goals-inline-levels'
 								className='components-text-control__input'
 							/>
 						</PanelRow>
 
 						<TextControl
-							id="pmpro-goals-goal"
+							id="pmpro-goals-inline-goal"
 							label={__('Goal Amount', 'pmpro-goals')}
 							value={goal}
 							onChange={goal => { setAttributes({ goal }) }}
