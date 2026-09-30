@@ -1,6 +1,6 @@
 {
   "name": "pmpro-goals",
-  "version": "1.0.0",
+  "version": "1.2.1",
   "description": "Display a progress bar for membrship site signup and revenue goals.",
   "main": "build/index.js",
   "scripts": {

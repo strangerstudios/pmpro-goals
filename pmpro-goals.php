@@ -5,7 +5,7 @@
  * Plugin URI: https://www.paidmembershipspro.com/add-ons/pmpro-goals/
  * Author: Paid Memberships Pro
  * Author URI: https://www.paidmembershipspro.com
- * Version: 1.2
+ * Version: 1.2.1
  * License: GPL2 or later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain: pmpro-goals
@@ -28,7 +28,7 @@
 
 defined( 'ABSPATH' ) or exit;
 
-define( 'PMPRO_GOALS_VERSION', '1.2' );
+define( 'PMPRO_GOALS_VERSION', '1.2.1' );
 
 /**
  * Register gutenberg block.

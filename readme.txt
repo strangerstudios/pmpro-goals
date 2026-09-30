@@ -2,8 +2,8 @@
 Contributors: strangerstudios, andrewlimaza
 Tags: pmpro, paid memberships pro, goals, progress
 Requires at least: 5.0
-Tested up to: 6.2
-Stable tag: 1.2
+Tested up to: 7.1
+Stable tag: 1.2.1
 
 Display a progress bar for membership site signup and revenue goals.
 
@@ -59,6 +59,11 @@ The shortcode attributes include:
 Please post it in the issues section of GitHub and we'll fix it as soon as we can. Thanks for helping. https://github.com/strangerstudios/pmpro-goals/issues
 
 == Changelog ==
+= 1.2.1 - 2026-09-30 =
+* SECURITY: Improved sanitization and escaping throughout the plugin to resolve Plugin Check security findings. #21 (@dparker1005)
+* ENHANCEMENT: The Goal Progress block's Levels to Track setting is now a checkbox list, matching core PMPro blocks. #21 (@dparker1005)
+* BUG FIX: Fixed browsers loading an outdated copy of the Goal Progress block editor script after the plugin is updated. #21 (@dparker1005)
+
 = 1.2 - 2023-06-08 =
 * REFACTOR: Reworked the block style to move all block settings to the sidebar instead of inline.
 * REFACTOR: Improved caching naming conventions and simplified caching logic where possible.
