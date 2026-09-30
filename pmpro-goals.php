@@ -28,6 +28,8 @@
 
 defined( 'ABSPATH' ) or exit;
 
+define( 'PMPRO_GOALS_VERSION', '1.2' );
+
 /**
  * Register gutenberg block.
  * @since 1.0
@@ -37,7 +39,8 @@ function pmpro_goals_register_block() {
 	wp_register_script( 
 		'pmpro-goals-block', 
 		plugins_url( 'build/index.js', __FILE__ ), 
-		array( 'wp-blocks', 'wp-element', 'wp-editor', 'pmpro_admin' )
+		array( 'wp-blocks', 'wp-element', 'wp-editor', 'pmpro_admin' ),
+		PMPRO_GOALS_VERSION
 	);
 
 	register_block_type( 'pmpro-goals/goal-progress', array(
@@ -109,6 +112,9 @@ function pmpro_goal_progress_bar_shortcode( $atts ) {
 
 	$level_data = apply_filters( 'pmpro_goals_sql_level_data', $level_data );
 
+	// Make sure the level list only contains integers before it is used in SQL.
+	$level_data = implode( ',', array_map( 'intval', explode( ',', (string) $level_data ) ) );
+
 	// intval ensures we have a number. We need a number greater than 0.
 	$goal = intval( $goal ) > 0 ? intval( $goal ) : 1;
 	$after = esc_attr( $after );
@@ -175,6 +181,7 @@ function pmpro_goal_progress_bar_shortcode( $atts ) {
 			}
 		}
 
+		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Level IDs are cast with intval() and dates are escaped with esc_sql(); result is cached in a transient.
 		$total = intval($wpdb->get_var($sql));
 
 		set_transient('pmpro_goals_' . $cache_key, $total, 12 * HOUR_IN_SECONDS);
@@ -205,9 +212,9 @@ function pmpro_goal_progress_bar_shortcode( $atts ) {
 				<div class="pmpro_goals-bar" style="<?php echo 'background:' . esc_attr( $background_color ); ?>;margin-top:1em;margin-bottom:1em;padding: 5px;border-radius:5px;">
 					<span class="pmpro_goals-bar-content" style="position:absolute;max-width:100%;<?php echo 'color:' . esc_attr( $font_color ); ?>;font-weight: 700;padding: 10px;">
 							<span class="pmpro_goals-before-text"><?php echo esc_html( $before ); ?></span>
-							<span class="pmpro_goals-total"><?php if ( $goal_type == 'revenue' ) { echo pmpro_formatPrice( $total ); } else { echo $total; } ?></span>
+							<span class="pmpro_goals-total"><?php if ( $goal_type == 'revenue' ) { echo wp_kses_post( pmpro_formatPrice( $total ) ); } else { echo esc_html( $total ); } ?></span>
 							<?php 
-							//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped - Escaped above.
+							// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Intended HTML; values are escaped above.
 							echo $after_text; 
 							?>
 					</span>
@@ -227,6 +234,7 @@ function pmpro_goals_delete_transients() {
 
 	$sql = "SELECT `option_name` FROM $wpdb->options WHERE `option_name` LIKE '%_pmpro_goal_%'";
 
+	// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Static query with no user input.
 	$results = $wpdb->get_results( $sql );
 
 	foreach( $results as $key => $value ) {
