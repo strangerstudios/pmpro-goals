@@ -139,25 +139,6 @@ export default registerBlockType(
 				/**	
 				 * Inline Settings for PMPro Goals.
 				 */
-				isSelected && <div className={className} >
-					<p><strong>{__('Goal Progress Bar Settings', 'pmpro-goals')}</strong> <span style={{ fontSize: '12px' }}></span></p>
-					<PanelBody>
-						<SelectControl
-							label={__('Type of Goal', 'pmpro-goals')}
-							options={goal_types}
-							value={goal_type}
-							onChange={goal_type => { setAttributes({ goal_type }) }}
-						/>
-						<LevelCheckboxes levels={levels} setAttributes={setAttributes} />
-
-						<TextControl
-							id="pmpro-goals-inline-goal"
-							label={__('Goal Amount', 'pmpro-goals')}
-							value={goal}
-							onChange={goal => { setAttributes({ goal }) }}
-						/>
-					</PanelBody>
-				</div>,
 				isSelected && <InspectorControls>
 					<PanelBody
 						title={__('Settings', 'pmpro-goals')}
