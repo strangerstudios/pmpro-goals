@@ -136,9 +136,6 @@ export default registerBlockType(
 			const { attributes: { goal_type, levels, before, after, goal, revenue, font_color, background_color, fill_color, start_date, end_date, use_dates }, className, setAttributes, isSelected } = props;
 
 			return [
-				/**	
-				 * Inline Settings for PMPro Goals.
-				 */
 				isSelected && <InspectorControls>
 					<PanelBody
 						title={__('Settings', 'pmpro-goals')}
