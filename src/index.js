@@ -1,6 +1,3 @@
-import React from 'react';
-import Select from 'react-select';
-
 const { __ } = wp.i18n;
 
 const {
@@ -9,8 +6,8 @@ const {
 
 const {
 	PanelBody,
-	PanelRow,
 	SelectControl,
+	CheckboxControl,
 	TextControl,
 	ColorPalette,
 	DateTimePicker,
@@ -23,6 +20,41 @@ const {
 
 
 const all_levels = pmpro.all_level_values_and_labels;
+
+/**
+ * Checkbox list of membership levels, matching the level picker in core PMPro blocks.
+ * Blocks saved before 1.2.1 store levels as { value, label } objects, so both formats are read.
+ */
+const LevelCheckboxes = ( { levels, setAttributes } ) => {
+	const selected = ( levels || [] ).map( ( level ) => ( level && typeof level === 'object' ) ? level.value + '' : level + '' );
+
+	const setLevel = ( levelID, checked ) => {
+		const newLevels = selected.filter( ( id ) => id !== levelID );
+		if ( checked ) {
+			newLevels.push( levelID );
+		}
+		setAttributes( { levels: newLevels } );
+	};
+
+	return (
+		<div className="pmpro-goals-levels">
+			<p><strong>{ __( 'Levels to Track', 'pmpro-goals' ) }</strong></p>
+			<p>
+				{ __( 'Select', 'pmpro-goals' ) } <a href="#" onClick={ ( event ) => { event.preventDefault(); setAttributes( { levels: all_levels.map( ( level ) => level.value + '' ) } ); } }>{ __( 'All', 'pmpro-goals' ) }</a> | <a href="#" onClick={ ( event ) => { event.preventDefault(); setAttributes( { levels: [] } ); } }>{ __( 'None', 'pmpro-goals' ) }</a>
+			</p>
+			<div className="pmpro-block-inspector-scrollable">
+				{ all_levels.map( ( level ) => (
+					<CheckboxControl
+						key={ level.value }
+						label={ level.label }
+						checked={ selected.includes( level.value + '' ) }
+						onChange={ ( checked ) => setLevel( level.value + '', checked ) }
+					/>
+				) ) }
+			</div>
+		</div>
+	);
+};
 
 const goal_types = [
 	{ value: 'revenue', label: __('Revenue', 'pmpro-goals') },
@@ -116,21 +148,7 @@ export default registerBlockType(
 							value={goal_type}
 							onChange={goal_type => { setAttributes({ goal_type }) }}
 						/>
-						<PanelRow className="select2-multi-row">
-							<label for="pmpro-goals-inline-levels" class="components-truncate components-text components-input-control__label em5sgkm4 css-1imalal e19lxcc00">
-								{__('Levels to Track', 'pmpro-goals')}
-							</label>
-							<Select
-								classNamePrefix='filter'
-								value={levels}
-								onChange={levels => { setAttributes({ levels }) }}
-								options={all_levels}
-								isMulti='true'
-								name='levels'
-								id='pmpro-goals-inline-levels'
-								className='components-text-control__input'
-							/>
-						</PanelRow>
+						<LevelCheckboxes levels={levels} setAttributes={setAttributes} />
 
 						<TextControl
 							id="pmpro-goals-inline-goal"
@@ -150,21 +168,7 @@ export default registerBlockType(
 							value={goal_type}
 							onChange={goal_type => { setAttributes({ goal_type }) }}
 						/>
-						<PanelRow className="select2-multi-row">
-							<label for="levels" class="components-truncate components-text components-input-control__label em5sgkm4 css-1imalal e19lxcc00">
-								{__('Levels to Track', 'pmpro-goals')}
-							</label>
-							<Select
-								classNamePrefix='filter'
-								value={levels}
-								onChange={levels => { setAttributes({ levels }) }}
-								options={all_levels}
-								isMulti='true'
-								name='levels'
-								id='levels'
-								className='components-text-control__input'
-							/>
-						</PanelRow>
+						<LevelCheckboxes levels={levels} setAttributes={setAttributes} />
 
 						<TextControl
 							id="pmpro-goals-goal"
